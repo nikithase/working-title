@@ -89,7 +89,7 @@ public class Client implements Runnable {
         while (true) {
             Command command = Command.fromBytes(network.receiveMessage());
             gamelogic.executeCommand(command);
-//            graphic.render();
+            graphic.showGamefield();
         }
     }
 

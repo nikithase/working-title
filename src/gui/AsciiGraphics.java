@@ -180,7 +180,7 @@ System.out.println("For example attack 0 0 1 1");
 	/**
 	 * 0 := empty Field X := Player 1 Y := Player 2
 	 */
-	private void showGamefield() {
+	public void showGamefield() {
 
 		String[][] field = new String[sizeX][sizeY];
 
