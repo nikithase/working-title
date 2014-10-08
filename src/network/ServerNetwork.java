@@ -59,7 +59,7 @@ public class ServerNetwork implements Runnable {
     /**
      * Return all received messages. The list can be empty if no messages are received yet.
      *
-     * @return
+     * @return a list of all received messages
      */
     public List<byte[]> getMessages() {
         ArrayList<byte[]> messages = new ArrayList<>();
@@ -71,7 +71,7 @@ public class ServerNetwork implements Runnable {
     /**
      * Return a list of the names of the connected clients.
      *
-     * @return
+     * @return a list of the connected clients
      */
     public List<String> getConnectedClients() {
         return clients;

@@ -21,6 +21,14 @@ public class ClientNetwork {
         socket = new Socket();
     }
 
+    /**
+     * Trys to connect to the host
+     *
+     * @param host name of the host
+     * @param port TCP Port
+     * @param name Name of the player
+     * @return true if connection success
+     */
     public boolean tryConnect(String host, int port, String name) {
         try {
             socket.connect(new InetSocketAddress(host, port));
@@ -33,6 +41,11 @@ public class ClientNetwork {
         }
     }
 
+    /**
+     * send a byte message to the host.
+     *
+     * @param bytes
+     */
     public void sendMessage(byte[] bytes) {
         try {
             socket.getOutputStream().write(bytes);
@@ -44,9 +57,11 @@ public class ClientNetwork {
     }
 
     /**
-     * Wait until a message is received.
+     * <<<<<<< HEAD Wait until a message is received.
      *
-     * @return
+     * @return ======= receive an array of bytes from the host
+     *
+     * @return the message >>>>>>> dce962ed3e23ca79f03dd5f259b6c9cecd07bd66
      */
     public byte[] receiveMessage() {
         try {
