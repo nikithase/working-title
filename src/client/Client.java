@@ -12,13 +12,20 @@ public class Client {
 	/**
 	 * Name of client 1
 	 */
-	public final static String PLAYER1 = "player1";
+	public final static String PLAYER1 = "Peter";
 	
 	
 	/**
 	 * Name of client 2
 	 */
-	public final static String PLAYER2 = "player2"; 
+	public final static String PLAYER2 = "Klaus"; 
+	
+
+	/**
+	 * size of field
+	 */
+	public final static int size = 10; 
+	
 	
 	/**
 	 * 
@@ -28,8 +35,9 @@ public class Client {
 	public static void main(String[] args) throws Exception {
 		
 		Gamelogic logic = new Gamelogic();
+		logic.initTestState();
 		
-		AsciiGraphics graphic = new AsciiGraphics(logic, 0, 0, PLAYER1, PLAYER2);
+		AsciiGraphics graphic = new AsciiGraphics(logic, size, size, PLAYER1, PLAYER2);
 		graphic.start();
 	}
 

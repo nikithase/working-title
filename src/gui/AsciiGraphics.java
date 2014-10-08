@@ -90,6 +90,8 @@ public class AsciiGraphics {
 		}
 
 		List<Unit> units = logic.getUnits();
+
+		System.out.print("\n");
 		
 		for(Unit u :units){
 			if(u.owner == player1){
@@ -97,9 +99,17 @@ public class AsciiGraphics {
 			} else {
 				field[u.posX][u.posY] = "Y";
 			}
+			System.out.println("Unit " + u.id + " at: " + u.posX + " : " +  u.posY);
 			
 		}
+		System.out.print("\n");
 		
+		for(int x = 0; x < field.length;x++){
+			for(int y = 0; y < field.length;y++){
+				System.out.print(field[x][y]);
+			}
+			System.out.print("\n");
+		}
 	}
 
 }
