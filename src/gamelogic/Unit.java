@@ -1,7 +1,7 @@
 package gamelogic;
 
 /**
- *
+ * 
  * @author Michael
  */
 public class Unit {
@@ -20,4 +20,14 @@ public class Unit {
 
     public String owner;
 
+    public Unit(int id, int hitpoints, int posX, int posY, int movespeed,
+            int damage, String owner) {
+        this.id = id;
+        this.hitpoints = hitpoints;
+        this.posX = posX;
+        this.posY = posY;
+        this.movespeed = movespeed;
+        this.damage = damage;
+        this.owner = owner;
+    }
 }
