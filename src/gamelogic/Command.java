@@ -6,6 +6,10 @@ package gamelogic;
  */
 public class Command {
 
+	
+	public static final String ATTACK = "attack";
+	public static final String MOVE = "move"; 
+	
 	/**
 	 * create a new command
 	 * 
