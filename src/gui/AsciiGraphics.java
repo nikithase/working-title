@@ -108,15 +108,28 @@ public class AsciiGraphics {
             System.out.println(line);
 
             //interpret command
-            if ((command.equals(Command.ATTACK) || command.equals(Command.MOVE)) && line.split(" ", 5).length == 5) {
+            if ((command.equals(Command.ATTACK) || command.equals(Command.MOVE)) && (line.split(" ", 5).length == 5 || line.split(" ", 5).length == 4)) {
                 System.out.println(command + "!!!!!!!!");
+
+                int x;
+                int y;
+                int targetX;
+                int targetY;
+                int unitId = -1;
                 
-                int x = Integer.parseInt(line.split(" ", 5)[1]);
-                int y = Integer.parseInt(line.split(" ", 5)[2]);
-                int targetX = Integer.parseInt(line.split(" ", 5)[3]);
-                int targetY = Integer.parseInt(line.split(" ", 5)[4]);
                 
-                int unitId = this.getUnitID(x, y);
+                if(line.split(" ", 5).length == 5){
+                	 x = Integer.parseInt(line.split(" ", 5)[1]);
+                     y = Integer.parseInt(line.split(" ", 5)[2]);
+                     targetX = Integer.parseInt(line.split(" ", 5)[3]);
+                     targetY = Integer.parseInt(line.split(" ", 5)[4]);
+                     unitId = this.getUnitID(x, y);
+                } else {
+                	unitId = Integer.parseInt(line.split(" ", 4)[1]);
+                    targetX = Integer.parseInt(line.split(" ", 4)[2]);
+                    targetY = Integer.parseInt(line.split(" ", 4)[3]);
+                }
+                
                 
                 if (unitId != -1) {
                     Command c = new Command(command, unitId, targetX, targetY);
@@ -149,8 +162,8 @@ public class AsciiGraphics {
      */
     private void printHelp() {
         System.out
-                .println("Need an command (attack or move) + unit X Coordinate + unit Y Coordinate + target X Coordinate + target Y Coordinate");
-        System.out.println("For example attack 0 0 1 1");
+                .println("Need an command (attack or move) + (unit X Coordinate + unit Y Coordinate || unitId ) + target X Coordinate + target Y Coordinate");
+        System.out.println("For example attack 0 0 1 1 or attack 3 1 1");
     }
 
     /**
