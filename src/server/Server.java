@@ -29,6 +29,7 @@ public class Server {
                 if (!messages.isEmpty()) {
                     for (byte[] message : messages) {
                         network.sendMessageToAll(message);
+                        System.out.println("message received: " + new String(message));
                     }
                 }
             } catch (InterruptedException ex) {
