@@ -105,8 +105,9 @@ public class AsciiGraphics {
 
 			//interpret command
 			
-			if (command.equals(Command.ATTACK) || command.equals(Command.MOVE)) {
+			if ((command.equals(Command.ATTACK) || command.equals(Command.MOVE)) && line.split(" ", 5).length == 5) {
 				System.out.println(command + "!!!!!!!!");
+				
 
 				int x = Integer.parseInt(line.split(" ", 5)[1]);
 				int y = Integer.parseInt(line.split(" ", 5)[2]);
