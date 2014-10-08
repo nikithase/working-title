@@ -57,10 +57,21 @@ public class Gamelogic {
                         Math.random()), "Klaus"));
     }
 
+    /**
+     * 
+     * Returns a List of actual existing units
+     * 
+     * @return List of units
+     */
     public List<Unit> getUnits() {
         return unitsOnField;
     }
 
+    /**
+     * Executs a Command
+     * 
+     * @param command
+     */
     public void executeCommand(Command command) {
 
         for (Iterator<Unit> iter = unitsOnField.iterator(); iter.hasNext();) {

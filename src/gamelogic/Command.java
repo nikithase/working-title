@@ -6,24 +6,43 @@ package gamelogic;
  */
 public class Command {
 
-    /**
-     * "move" or "attack"
-     *
-     * @return
-     */
-    public String command;
+	/**
+	 * "move" or "attack"
+	 */
+	public String command;
 
-    public int unitId;
+	/**
+	 * unique ID for a Unit
+	 */
+	public int unitId;
 
-    public int targetX;
+	/**
+	 * Target X field
+	 */
+	public int targetX;
 
-    public int targetY;
+	/**
+	 * Target Y field
+	 */
+	public int targetY;
 
-    public byte[] toBytes() {
-        return null;
-    }
+	/**
+	 * 
+	 * Converts the command into bytes
+	 * 
+	 * @return a array of bytes
+	 */
+	public byte[] toBytes() {
+		return null;
+	}
 
-    public Command fromBytes() {
-        return null;
-    }
+	/**
+	 * 
+	 * Interprets a byte array as a command
+	 * 
+	 * @return a Command
+	 */
+	public Command fromBytes() {
+		return null;
+	}
 }
