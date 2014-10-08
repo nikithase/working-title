@@ -7,12 +7,21 @@ package gui;
  */
 public class AsciiGraphics {
 
-    public AsciiGraphics() {
-        System.out.println("working tilte V0.0");
-    }
+	/**
+	 * Does something.
+	 */
+	public AsciiGraphics() {
+		System.out.println("working tilte V0.0");
+	}
 
-    public void printText(String text) {
-        System.out.println(text);
-    }
+	/**
+	 * 
+	 * Prints text to the command line.
+	 * 
+	 * @param text
+	 */
+	public void printText(String text) {
+		System.out.println(text);
+	}
 
 }

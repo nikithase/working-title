@@ -15,10 +15,21 @@ public class Gamelogic {
 
     }
 
+    /**
+     * 
+     * Returns a List of actual existing units
+     * 
+     * @return List of units
+     */
     public List<Unit> getUnits() {
         return null;
     }
 
+    /**
+     * Executs a Command
+     * 
+     * @param command
+     */
     public void executeCommand(Command command) {
 
     }

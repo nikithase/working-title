@@ -20,7 +20,7 @@ public class ServerNetwork {
     /**
      * Return a list of all received messages. The list can be empty if no messages are received yet.
      *
-     * @return
+     * @return a list of all received messages
      */
     public List<byte[]> getMessages() {
         return null;
@@ -29,7 +29,7 @@ public class ServerNetwork {
     /**
      * Return a list of the names of the connected clients.
      *
-     * @return
+     * @return a list of the connected clients
      */
     public List<String> getConnectedClients() {
         return null;
