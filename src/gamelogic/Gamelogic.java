@@ -26,31 +26,31 @@ public class Gamelogic {
                 Math.random() * 10), (int) Math.pow(Math.random() * 10,
                 Math.random() * 10), "Peter"));
 
-        unitsOnField.add(new Unit(1, (int) Math.pow(Math.random() * 10,
+        unitsOnField.add(new Unit(2, (int) Math.pow(Math.random() * 10,
                 Math.random() * 10), (int) (Math.random() * 10), (int) (Math
                 .random() * 10), (int) Math.pow(Math.random() * 10,
                 Math.random() * 10), (int) Math.pow(Math.random() * 10,
                 Math.random() * 10), "Peter"));
 
-        unitsOnField.add(new Unit(1, (int) Math.pow(Math.random() * 10,
+        unitsOnField.add(new Unit(3, (int) Math.pow(Math.random() * 10,
                 Math.random() * 10), (int) (Math.random() * 10), (int) (Math
                 .random() * 10), (int) Math.pow(Math.random() * 10,
                 Math.random() * 10), (int) Math.pow(Math.random() * 10,
                 Math.random() * 10), "Peter"));
 
-        unitsOnField.add(new Unit(1, (int) Math.pow(Math.random() * 10,
+        unitsOnField.add(new Unit(4, (int) Math.pow(Math.random() * 10,
                 Math.random() * 10), (int) (Math.random() * 10), (int) (Math
                 .random() * 10), (int) Math.pow(Math.random() * 10,
                 Math.random() * 10), (int) Math.pow(Math.random() * 10,
                 Math.random() * 10), "Klaus"));
 
-        unitsOnField.add(new Unit(1, (int) Math.pow(Math.random() * 10,
+        unitsOnField.add(new Unit(5, (int) Math.pow(Math.random() * 10,
                 Math.random() * 10), (int) (Math.random() * 10), (int) (Math
                 .random() * 10), (int) Math.pow(Math.random() * 10,
                 Math.random() * 10), (int) Math.pow(Math.random() * 10,
                 Math.random() * 10), "Klaus"));
 
-        unitsOnField.add(new Unit(1, (int) Math.pow(Math.random() * 10,
+        unitsOnField.add(new Unit(6, (int) Math.pow(Math.random() * 10,
                 Math.random() * 10), (int) (Math.random() * 10), (int) (Math
                 .random() * 10), (int) Math.pow(Math.random() * 10,
                 Math.random() * 10), (int) Math.pow(Math.random() * 10,
