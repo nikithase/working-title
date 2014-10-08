@@ -7,8 +7,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -86,19 +84,24 @@ public class ServerNetwork implements Runnable {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 String name = reader.readLine();
                 clients.add(name);
+                System.out.println("[SERV]: New client " + name);
 
                 Thread messageReceiveThread = new Thread(new Runnable() {
 
                     @Override
                     public void run() {
-                        while (true) {
-                            try {
+                        try {
+                            while (true) {
                                 String message = reader.readLine();
+                                if (message == null) {
+                                    System.out.println("[SERV]: " + name + " disconnected (eof)");
+                                    break;
+                                }
                                 receivedMessages.add(message.getBytes());
-                            } catch (IOException ex) {
-                                ex.printStackTrace();
                             }
-
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                            System.out.println("[SERV]: " + name + " disconnected (exception)");
                         }
                     }
                 });
