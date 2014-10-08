@@ -38,7 +38,7 @@ public class Client implements Runnable {
         mainloop = new Thread(this);
         mainloop.setName("Clientmainloop");
 
-        graphic = new AsciiGraphics(gamelogic, size, size, PLAYER1, PLAYER2);
+        graphic = new AsciiGraphics(this, gamelogic, size, size, PLAYER1, PLAYER2);
         Thread graphicsThread = new Thread(new Runnable() {
 
             @Override

@@ -8,6 +8,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import client.Client;
+
 /**
  * Textbased GUI for testing.
  *
@@ -16,7 +18,11 @@ import java.io.InputStreamReader;
 public class AsciiGraphics {
 
 	private static final String EXIT = "exit";
+	private static final String CONNECT = "connect";
 	private static final String VERSION = "ConsoleGraphics v1.0";
+	
+	
+	private Client client;
 	
 	/**
 	 * pointer to the GameLogic
@@ -48,7 +54,7 @@ public class AsciiGraphics {
 	 * @param player1
 	 * @param player2
 	 */
-	public AsciiGraphics(Gamelogic logic, int sizeX, int sizeY, String player1,
+	public AsciiGraphics(Client client, Gamelogic logic, int sizeX, int sizeY, String player1,
 			String player2) {
 		System.out.println("working tilte V0.0");
 
@@ -57,6 +63,7 @@ public class AsciiGraphics {
 		this.sizeY = sizeY;
 		this.player1 = player1;
 		this.player2 = player2;
+		this.client = client;
 		
 		printGraphicVersion();
 
@@ -124,6 +131,11 @@ public class AsciiGraphics {
 					this.printHelp();
 				}
 
+			} else if (command.equals(CONNECT)  && line.split(" ", 3).length == 3) {
+				System.out.print("connect to ");
+				String ip = line.split(" ", 3)[1];
+				String name = line.split(" ", 3)[2];
+				client.connect(ip, name);
 			} else if (command.equals(EXIT)) {
 				System.out.print("BYE BYE");
 				run = false;
