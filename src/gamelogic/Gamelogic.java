@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * 
+ *
  * @author Michael
  */
 public class Gamelogic {
@@ -20,48 +20,25 @@ public class Gamelogic {
      * Load a testing gamestate.
      */
     public void initTestState() {
-        unitsOnField.add(new Unit(1, (int) Math.pow(Math.random() * 10,
-                Math.random() * 10), (int) (Math.random() * 10), (int) (Math
-                .random() * 10), (int) Math.pow(Math.random() * 10,
-                Math.random() * 10), (int) Math.pow(Math.random() * 10,
-                Math.random() * 10), "Peter"));
 
-        unitsOnField.add(new Unit(2, (int) Math.pow(Math.random() * 10,
-                Math.random() * 10), (int) (Math.random() * 10), (int) (Math
-                .random() * 10), (int) Math.pow(Math.random() * 10,
-                Math.random() * 10), (int) Math.pow(Math.random() * 10,
-                Math.random() * 10), "Peter"));
+        for (int i = 0; i < 10; i++) {
 
-        unitsOnField.add(new Unit(3, (int) Math.pow(Math.random() * 10,
-                Math.random() * 10), (int) (Math.random() * 10), (int) (Math
-                .random() * 10), (int) Math.pow(Math.random() * 10,
-                Math.random() * 10), (int) Math.pow(Math.random() * 10,
-                Math.random() * 10), "Peter"));
+            int id = i;
+            int hp = 100;
+            int posX = (i < 5) ? i : 9 - i;
+            int posY = (i < 5) ? 1 : 9;
+            int movespeed = 1;
+            int damage = 10;
+            String owner = (i < 5) ? "wayne train" : "mt. whateverest";
 
-        unitsOnField.add(new Unit(4, (int) Math.pow(Math.random() * 10,
-                Math.random() * 10), (int) (Math.random() * 10), (int) (Math
-                .random() * 10), (int) Math.pow(Math.random() * 10,
-                Math.random() * 10), (int) Math.pow(Math.random() * 10,
-                Math.random() * 10), "Klaus"));
-
-        unitsOnField.add(new Unit(5, (int) Math.pow(Math.random() * 10,
-                Math.random() * 10), (int) (Math.random() * 10), (int) (Math
-                .random() * 10), (int) Math.pow(Math.random() * 10,
-                Math.random() * 10), (int) Math.pow(Math.random() * 10,
-                Math.random() * 10), "Klaus"));
-
-        unitsOnField.add(new Unit(6, (int) Math.pow(Math.random() * 10,
-                Math.random() * 10), (int) (Math.random() * 10), (int) (Math
-                .random() * 10), (int) Math.pow(Math.random() * 10,
-                Math.random() * 10), (int) Math.pow(Math.random() * 10,
-                Math.random() * 10), "Klaus"));
-
+            unitsOnField.add(new Unit(id, hp, posX, posY, movespeed, damage, owner));
+        }
     }
 
     /**
-     * 
+     *
      * Returns a List of actual existing units
-     * 
+     *
      * @return List of units
      */
     public List<Unit> getUnits() {
@@ -70,7 +47,7 @@ public class Gamelogic {
 
     /**
      * Executs a Command
-     * 
+     *
      * @param command
      */
     public void executeCommand(Command command) {
@@ -81,24 +58,24 @@ public class Gamelogic {
             if (currentUnit.id == command.unitId) {
 
                 switch (command.command) {
-                case "move":
-                    currentUnit.posX = command.targetX;
-                    currentUnit.posY = command.targetY;
-                    break;
-                case "attack":
-                    for (Iterator<Unit> iter2 = unitsOnField.iterator(); iter2
-                            .hasNext();) {
-                        Unit unitToAttack = iter2.next();
-                        if (unitToAttack.posX == command.targetX
-                                && unitToAttack.posY == command.targetY) {
-                            unitToAttack.hitpoints -= currentUnit.damage;
-                            if (unitToAttack.hitpoints <= 0) {
-                                iter2.remove();
+                    case "move":
+                        currentUnit.posX = command.targetX;
+                        currentUnit.posY = command.targetY;
+                        break;
+                    case "attack":
+                        for (Iterator<Unit> iter2 = unitsOnField.iterator(); iter2
+                                .hasNext();) {
+                            Unit unitToAttack = iter2.next();
+                            if (unitToAttack.posX == command.targetX
+                                    && unitToAttack.posY == command.targetY) {
+                                unitToAttack.hitpoints -= currentUnit.damage;
+                                if (unitToAttack.hitpoints <= 0) {
+                                    iter2.remove();
+                                }
                             }
                         }
-                    }
-                    break;
-                default:
+                        break;
+                    default:
                     ;
                 }
 
