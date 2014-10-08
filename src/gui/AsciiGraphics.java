@@ -1,5 +1,6 @@
 package gui;
 
+import gamelogic.Command;
 import gamelogic.Gamelogic;
 import gamelogic.Unit;
 
@@ -23,6 +24,7 @@ public class AsciiGraphics {
 	private int sizeY;
 	private String player1;
 	private String player2;
+	private static final String EXIT = "exit";
 
 	/**
 	 * Does something.
@@ -59,23 +61,63 @@ public class AsciiGraphics {
 	 */
 	public void start() {
 
-		while (true) {
+		boolean run = true;
+		
+		while (run) {
 			
 			this.showGamefield();
 
 			BufferedReader console = new BufferedReader(new InputStreamReader(
 					System.in));
-			System.out.print("Geben Sie etwas ein: ");
-			String zeile = null;
+			System.out.print("Command: ");
+			String line = null;
 			try {
-				zeile = console.readLine();
+				line = console.readLine();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			System.out.println("Ihre Eingabe war: " + zeile);
 
+			String command = line.split(" ", 2)[0];
+			
+			System.out.println(line);
+			
+			if(command.equals(Command.ATTACK) || command.equals(Command.MOVE)){
+				System.out.println(command +  "!!!!!!!!");
+				
+				int x = Integer.parseInt(line.split(" ", 5)[1]);
+				int y = Integer.parseInt(line.split(" ", 5)[2]);
+				int targetX = Integer.parseInt(line.split(" ", 5)[3]);
+				int targetY = Integer.parseInt(line.split(" ", 5)[4]);
+				
+				int unitId = this.getUnitID(x, y);
+				
+				
+				if(unitId != -1){
+					Command c = new Command(command, unitId , targetX , targetY );
+					logic.executeCommand(c);
+				} else {
+					System.out.println("Unit not found");
+				}
+				
+				
+			} else if(command == EXIT){
+				System.out.print("BYE BYE");
+				run = false;
+			} else {
+				System.out.print("ERROR .... need an command (attack or move) + unit X Coordinate + unit Y Coordinate + target X Coordinate + target Y Coordinate");
+				System.out.print("for exampple attack 0 0 1 1");
+			}
 		}
 
+	}
+	
+	private int getUnitID(int x, int y){
+		for(Unit u :logic.getUnits()){
+			if(u.posX == x && u.posY == y){
+				return u.id;
+			}
+		}
+		return -1;
 	}
 
 	/**
