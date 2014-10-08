@@ -57,11 +57,11 @@ public class ClientNetwork {
     }
 
     /**
-     * <<<<<<< HEAD Wait until a message is received.
+     * Wait until a message is received.
      *
-     * @return ======= receive an array of bytes from the host
+     * @return receive an array of bytes from the host
      *
-     * @return the message >>>>>>> dce962ed3e23ca79f03dd5f259b6c9cecd07bd66
+     * @return the message
      */
     public byte[] receiveMessage() {
         try {
