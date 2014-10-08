@@ -12,6 +12,10 @@ public class Server {
 
     private ServerNetwork network;
 
+    public static void main(String args[]) {
+        new Server();
+    }
+
     /**
      * Start a server.
      */
