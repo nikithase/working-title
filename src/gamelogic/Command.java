@@ -7,6 +7,21 @@ package gamelogic;
 public class Command {
 
 	/**
+	 * create a new command
+	 * 
+	 * @param command
+	 * @param unitId 
+	 * @param targetX 
+	 * @param targetY 
+	 */
+	public Command(String command, int unitId, int targetX, int targetY){
+		this.command = command;
+		this.unitId = unitId;
+		this.targetX = targetX;
+		this.targetY = targetY;
+	}
+	
+	/**
 	 * "move" or "attack"
 	 */
 	public String command;

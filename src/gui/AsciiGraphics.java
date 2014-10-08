@@ -30,6 +30,8 @@ public class AsciiGraphics {
 	 * @param logic
 	 * @param sizeX
 	 * @param sizeY
+	 * @param player1 
+	 * @param player2 
 	 */
 	public AsciiGraphics(Gamelogic logic, int sizeX, int sizeY, String player1, String player2) {
 		System.out.println("working tilte V0.0");
