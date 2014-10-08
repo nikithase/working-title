@@ -21,40 +21,34 @@ public class Gamelogic {
      */
     public void initTestState() {
         unitsOnField.add(new Unit(1, (int) Math.pow(Math.random(),
-                Math.random()), (int) Math.random() * 10,
-                (int) Math.random() * 10, (int) Math.pow(Math.random(),
-                        Math.random()), (int) Math.pow(Math.random(),
-                        Math.random()), "Peter"));
+                Math.random()), (int) (Math.random() * 10), (int) (Math
+                .random() * 10), (int) Math.pow(Math.random(), Math.random()),
+                (int) Math.pow(Math.random(), Math.random()), "Peter"));
 
         unitsOnField.add(new Unit(2, (int) Math.pow(Math.random(),
-                Math.random()), (int) Math.random() * 10,
-                (int) Math.random() * 10, (int) Math.pow(Math.random(),
-                        Math.random()), (int) Math.pow(Math.random(),
-                        Math.random()), "Peter"));
+                Math.random()), (int) (Math.random() * 10), (int) (Math
+                .random() * 10), (int) Math.pow(Math.random(), Math.random()),
+                (int) Math.pow(Math.random(), Math.random()), "Peter"));
 
         unitsOnField.add(new Unit(3, (int) Math.pow(Math.random(),
-                Math.random()), (int) Math.random() * 10,
-                (int) Math.random() * 10, (int) Math.pow(Math.random(),
-                        Math.random()), (int) Math.pow(Math.random(),
-                        Math.random()), "Peter"));
+                Math.random()), (int) (Math.random() * 10), (int) (Math
+                .random() * 10), (int) Math.pow(Math.random(), Math.random()),
+                (int) Math.pow(Math.random(), Math.random()), "Peter"));
 
         unitsOnField.add(new Unit(4, (int) Math.pow(Math.random(),
-                Math.random()), (int) Math.random() * 10,
-                (int) Math.random() * 10, (int) Math.pow(Math.random(),
-                        Math.random()), (int) Math.pow(Math.random(),
-                        Math.random()), "Klaus"));
+                Math.random()), (int) (Math.random() * 10), (int) (Math
+                .random() * 10), (int) Math.pow(Math.random(), Math.random()),
+                (int) Math.pow(Math.random(), Math.random()), "Klaus"));
 
         unitsOnField.add(new Unit(5, (int) Math.pow(Math.random(),
-                Math.random()), (int) Math.random() * 10,
-                (int) Math.random() * 10, (int) Math.pow(Math.random(),
-                        Math.random()), (int) Math.pow(Math.random(),
-                        Math.random()), "Klaus"));
+                Math.random()), (int) (Math.random() * 10), (int) (Math
+                .random() * 10), (int) Math.pow(Math.random(), Math.random()),
+                (int) Math.pow(Math.random(), Math.random()), "Klaus"));
 
         unitsOnField.add(new Unit(6, (int) Math.pow(Math.random(),
-                Math.random()), (int) Math.random() * 10,
-                (int) Math.random() * 10, (int) Math.pow(Math.random(),
-                        Math.random()), (int) Math.pow(Math.random(),
-                        Math.random()), "Klaus"));
+                Math.random()), (int) (Math.random() * 10), (int) (Math
+                .random() * 10), (int) Math.pow(Math.random(), Math.random()),
+                (int) Math.pow(Math.random(), Math.random()), "Klaus"));
     }
 
     /**
