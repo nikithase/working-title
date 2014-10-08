@@ -100,7 +100,7 @@ public class AsciiGraphics {
 				}
 				
 				
-			} else if(command == EXIT){
+			} else if(command.equals(EXIT)){
 				System.out.print("BYE BYE");
 				run = false;
 			} else {
