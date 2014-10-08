@@ -7,7 +7,6 @@ import gamelogic.Unit;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.List;
 
 /**
  * Textbased GUI for testing.
@@ -16,16 +15,30 @@ import java.util.List;
  */
 public class AsciiGraphics {
 
+	private static final String EXIT = "exit";
+	private static final String VERSION = "ConsoleGraphics v1.0";
+	
 	/**
-	 * 
+	 * pointer to the GameLogic
 	 */
 	private Gamelogic logic;
+	
+	/**
+	 *  Size of the gamefield
+	 */
 	private int sizeX;
 	private int sizeY;
+	
+	/**
+	 * player1
+	 */
 	private String player1;
+	
+	/**
+	 * player2
+	 */
 	private String player2;
-	private static final String EXIT = "exit";
-
+	
 	/**
 	 * Does something.
 	 * 
@@ -44,6 +57,8 @@ public class AsciiGraphics {
 		this.sizeY = sizeY;
 		this.player1 = player1;
 		this.player2 = player2;
+		
+		printGraphicVersion();
 
 	}
 
@@ -62,6 +77,7 @@ public class AsciiGraphics {
 	 */
 	public void start() {
 
+		
 		boolean run = true;
 
 		while (run) {
@@ -70,6 +86,8 @@ public class AsciiGraphics {
 
 			this.showGamefield();
 
+			// reads command
+			
 			BufferedReader console = new BufferedReader(new InputStreamReader(
 					System.in));
 			System.out.println("\n");
@@ -85,6 +103,8 @@ public class AsciiGraphics {
 
 			System.out.println(line);
 
+			//interpret command
+			
 			if (command.equals(Command.ATTACK) || command.equals(Command.MOVE)) {
 				System.out.println(command + "!!!!!!!!");
 
@@ -114,6 +134,14 @@ public class AsciiGraphics {
 
 	}
 
+	/**
+	 * 
+	 * returns the UnitID of an specific field
+	 * 
+	 * @param x x-Position 
+	 * @param y y-Position
+	 * @return the unique Unit ID
+	 */
 	private int getUnitID(int x, int y) {
 		for (Unit u : logic.getUnits()) {
 			if (u.posX == x && u.posY == y) {
@@ -123,6 +151,9 @@ public class AsciiGraphics {
 		return -1;
 	}
 
+	/**
+	 * prints a List of Units
+	 */
 	private void showUnitList() {
 
 		System.out.print("\n");
@@ -179,5 +210,11 @@ public class AsciiGraphics {
 			System.out.print("\n");
 		}
 	}
-
+	
+	/**
+	 * prints the current Graphic Version
+	 */
+	public void printGraphicVersion(){
+		System.out.print(VERSION);
+	}
 }
