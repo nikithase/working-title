@@ -66,6 +66,8 @@ public class AsciiGraphics {
 
 		while (run) {
 
+			this.showUnitList();
+
 			this.showGamefield();
 
 			BufferedReader console = new BufferedReader(new InputStreamReader(
@@ -121,6 +123,18 @@ public class AsciiGraphics {
 		return -1;
 	}
 
+	private void showUnitList() {
+
+		System.out.print("\n");
+		System.out.print("\n");
+
+		for (Unit u : logic.getUnits()) {
+			System.out.println("Unit " + u.id + " at: " + u.posX + " : "
+					+ u.posY + " Hitpoints: " + u.hitpoints + " Damage: "
+					+ u.damage);
+		}
+	}
+
 	/**
 	 * 0 := empty Field X := Player 1 Y := Player 2
 	 */
@@ -134,22 +148,18 @@ public class AsciiGraphics {
 			}
 		}
 
-		List<Unit> units = logic.getUnits();
-
 		System.out.print("\n");
 
-		for (Unit u : units) {
+		for (Unit u : logic.getUnits()) {
 			if (u.owner == player1) {
 				field[u.posX][u.posY] = "X";
 			} else {
 				field[u.posX][u.posY] = "Y";
 			}
-			System.out.println("Unit " + u.id + " at: " + u.posX + " : "
-					+ u.posY + " Hitpoints: " + u.hitpoints);
 
 		}
 		System.out.print("\n");
-		
+
 		System.out.print(" ");
 		System.out.print(" ");
 		System.out.print(" ");
