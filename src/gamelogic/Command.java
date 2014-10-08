@@ -1,7 +1,13 @@
 package gamelogic;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.nio.ByteBuffer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -55,10 +61,20 @@ public class Command {
      */
     public byte[] toBytes() {
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-        buffer.write(command.equals("attack") ? 1 : 0);
-        buffer.write(unitId);
-        buffer.write(targetX);
-        buffer.write(targetY);
+        try {
+
+            ObjectOutputStream output = new ObjectOutputStream(buffer);
+            output.writeUTF(command);
+            output.writeInt(unitId);
+            output.writeInt(targetX);
+            output.writeInt(targetY);
+
+            output.flush();
+            output.close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
         return buffer.toByteArray();
     }
 
@@ -69,10 +85,17 @@ public class Command {
      * @return a Command
      */
     public static Command fromBytes(byte bytes[]) {
-        String command = (bytes[0] == 1) ? "attack" : "move";
-        int unitId = bytes[1];
-        int targetX = bytes[2];
-        int targetY = bytes[3];
-        return new Command(command, unitId, targetX, targetY);
+        ObjectInputStream input;
+        try {
+            input = new ObjectInputStream(new ByteArrayInputStream(bytes));
+            String command = input.readUTF();
+            int unitId = input.readInt();
+            int targetX = input.readInt();
+            int targetY = input.readInt();
+            return new Command(command, unitId, targetX, targetY);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
     }
 }
