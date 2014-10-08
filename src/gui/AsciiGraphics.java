@@ -91,7 +91,7 @@ public class AsciiGraphics {
 			BufferedReader console = new BufferedReader(new InputStreamReader(
 					System.in));
 			System.out.println("\n");
-			System.out.println("Command: ");
+			System.out.print("Command: ");
 			String line = null;
 			try {
 				line = console.readLine();
@@ -120,7 +120,8 @@ public class AsciiGraphics {
 					Command c = new Command(command, unitId, targetX, targetY);
 					logic.executeCommand(c);
 				} else {
-					System.out.println("Unit not found");
+					System.out.println("ERROR: Unit not found");
+					this.printHelp();
 				}
 
 			} else if (command.equals(EXIT)) {
@@ -128,13 +129,22 @@ public class AsciiGraphics {
 				run = false;
 			} else {
 				System.out
-						.print("ERROR .... need an command (attack or move) + unit X Coordinate + unit Y Coordinate + target X Coordinate + target Y Coordinate");
-				System.out.print("for example attack 0 0 1 1");
+						.println("ERROR");
+				this.printHelp();
 			}
 		}
 
 	}
 
+	/**
+	 * prints the Help
+	 */
+	private void printHelp(){
+		System.out
+		.println("Need an command (attack or move) + unit X Coordinate + unit Y Coordinate + target X Coordinate + target Y Coordinate");
+System.out.println("For example attack 0 0 1 1");
+	}
+	
 	/**
 	 * 
 	 * returns the UnitID of an specific field
@@ -195,15 +205,27 @@ public class AsciiGraphics {
 		System.out.print(" ");
 		System.out.print(" ");
 		System.out.print(" ");
+		System.out.print(" ");
 
 		for (int y = 0; y < field[0].length; y++) {
 			System.out.print(y);
 			System.out.print(" ");
 		}
 		System.out.print("\n");
+		
+		System.out.print(" ");
+		System.out.print(" ");
+		System.out.print(" ");
+		System.out.print(" ");
+		
+		for (int y = 0; y < field[0].length; y++) {
+			System.out.print("_");
+			System.out.print(" ");
+		}
+		System.out.print("\n");
 
 		for (int x = 0; x < field.length; x++) {
-			System.out.print(x + ": ");
+			System.out.print(x + " | ");
 			for (int y = 0; y < field[0].length; y++) {
 				System.out.print(field[x][y]);
 				System.out.print(" ");
