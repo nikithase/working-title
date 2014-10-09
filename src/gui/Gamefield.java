@@ -100,9 +100,20 @@ public class Gamefield extends JPanel implements MouseListener {
 		
 		List<Cell> cors = new LinkedList<Cell>();
 		
+		
+		int startx = u.r.x - (u.speed * tile_size);
+		int starty = u.r.y - (u.speed * tile_size);
 
-		for(int x = u.r.x; x <( u.r.x + u.r.width); x++){
-			for(int y = u.r.y; y <( u.r.y + u.r.height); y++){
+		int endx = u.r.x + (u.speed * tile_size);
+		int endy = u.r.y + (u.speed * tile_size);
+		
+		
+
+		for(int x = startx; x <= endx; x = x + tile_size){
+			for(int y = starty; y <= endy; y = y + tile_size){
+				
+				System.out.println("test");
+				
 				if(getUnitID(x, y) == -1){
 					cors.add(new Cell(x,y));
 				}
