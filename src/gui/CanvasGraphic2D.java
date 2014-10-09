@@ -72,7 +72,7 @@ public class CanvasGraphic2D extends JPanel implements iGraphic,ActionListener {
 	 * testing function
 	 * 
 	 * @param args
-	 */
+	 *
 	public static void main(String[] args) {
 
 		Gamelogic logic = new Gamelogic();
@@ -82,7 +82,7 @@ public class CanvasGraphic2D extends JPanel implements iGraphic,ActionListener {
 		graphics.initialize();
 		graphics.refresh();
 
-	}
+	}*/
 
 
 	/**

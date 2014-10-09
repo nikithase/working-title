@@ -16,7 +16,7 @@ import javax.imageio.ImageIO;
 public class TextureLib {
 
 	/**
-	 * white Texture for "Weiﬂer Bauer"
+	 * white Texture for "Weisser Bauer"
 	 */
 	public static BufferedImage wBauer = null;
 

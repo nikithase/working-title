@@ -347,6 +347,7 @@ public class Gamefield extends JPanel implements MouseListener {
 
 					if (client == null) {
 						/** test umgebung **/
+						System.out.println("force execution");
 						logic.executeCommand(c);
 						this.canvas.refresh();
 					} else {
@@ -374,6 +375,7 @@ public class Gamefield extends JPanel implements MouseListener {
 
 					if (client == null) {
 						/** test umgebung **/
+						System.out.println("force execution");
 						logic.executeCommand(c);
 						this.canvas.refresh();
 					} else {
