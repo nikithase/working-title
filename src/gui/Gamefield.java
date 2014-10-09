@@ -37,8 +37,9 @@ public class Gamefield extends JPanel implements MouseListener {
 	private final static Color LOCKED_CELLS_PATH = new Color(0, 0, 255, 50);
 
 	private Gamelogic logic;
+	private FocusedUnit focused;
 
-	public Gamefield(int width, int height, int amount_x, int amount_y, int tile_size, String player, Gamelogic logic) {
+	public Gamefield(int width, int height, int amount_x, int amount_y, int tile_size, String player, Gamelogic logic, FocusedUnit focused) {
 		this.width = width;
 		this.height = height;
 		this.amount_x = amount_x;
@@ -54,6 +55,7 @@ public class Gamefield extends JPanel implements MouseListener {
 		l_unit = -1;
 		this.logic = logic;
 
+		this.focused = focused;
 		this.addMouseListener(this);
 	}
 
@@ -99,6 +101,7 @@ public class Gamefield extends JPanel implements MouseListener {
 		if (l_unit != -1) {
 			CellUnit tmp = getCellUnit(l_unit);
 			if (tmp != null) {
+				focused.showUnit(tmp);
 				g.setColor(LOCKED_CELLS);
 				g.fillRect(tmp.r.x, tmp.r.y, tmp.r.width, tmp.r.height);
 
@@ -109,6 +112,7 @@ public class Gamefield extends JPanel implements MouseListener {
 			}
 
 		}
+		
 
 	}
 
@@ -122,11 +126,11 @@ public class Gamefield extends JPanel implements MouseListener {
 		l_unit_path = new LinkedList<Rectangle>();
 		l_e_unit_path = new LinkedList<Rectangle>();
 
-		int startx = u.r.x - (u.speed * tile_size);
-		int starty = u.r.y - (u.speed * tile_size);
+		int startx = u.r.x - (u.movespeed * tile_size);
+		int starty = u.r.y - (u.movespeed * tile_size);
 
-		int endx = u.r.x + (u.speed * tile_size);
-		int endy = u.r.y + (u.speed * tile_size);
+		int endx = u.r.x + (u.movespeed * tile_size);
+		int endy = u.r.y + (u.movespeed * tile_size);
 
 		for (int x = startx; x <= endx; x = x + tile_size) {
 			for (int y = starty; y <= endy; y = y + tile_size) {
@@ -172,7 +176,7 @@ public class Gamefield extends JPanel implements MouseListener {
 		LinkedList<CellUnit> tmp = new LinkedList<CellUnit>();
 
 		for (Unit u : units) {
-			tmp.add(new CellUnit(new Rectangle(u.posX * tile_size, u.posY * tile_size, tile_size, tile_size), u.id, u.owner, u.movespeed));
+			tmp.add(new CellUnit(new Rectangle(u.posX * tile_size, u.posY * tile_size, tile_size, tile_size),u));
 		}
 
 		return tmp;
@@ -330,18 +334,13 @@ public class Gamefield extends JPanel implements MouseListener {
 
 	}
 
-	private class CellUnit {
+	private class CellUnit extends Unit {
 
-		public int id;
 		public Rectangle r;
-		public String owner;
-		public int speed;
 
-		public CellUnit(Rectangle r, int id, String owner, int speed) {
-			this.id = id;
+		public CellUnit(Rectangle r, Unit u) {
+			super(u.id, u.hitpoints, u.posX, u.posY, u.movespeed, u.damage, u.owner);
 			this.r = r;
-			this.owner = owner;
-			this.speed = speed;
 		}
 
 	}
