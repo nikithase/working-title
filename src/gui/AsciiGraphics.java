@@ -13,7 +13,8 @@ import client.Client;
 /**
  * Textbased GUI for testing.
  *
- * @author Michael
+ * @author Ludwig Biermann
+ * @version 1.1
  */
 public class AsciiGraphics {
 
@@ -42,16 +43,18 @@ public class AsciiGraphics {
 	/**
 	 * player2
 	 */
+	@SuppressWarnings("unused")
 	private String player2;
 
 	/**
-	 * Does something.
-	 *
-	 * @param logic
-	 * @param sizeX
-	 * @param sizeY
-	 * @param player1
-	 * @param player2
+	 * Construct a new Console Graphic Engine
+	 * 
+	 * @param client the core system
+	 * @param logic the logic system
+	 * @param sizeX the height of the field
+	 * @param sizeY the width of the field
+	 * @param player1 the Player 1
+	 * @param player2 the Player 2
 	 */
 	public AsciiGraphics(Client client, Gamelogic logic, int sizeX, int sizeY, String player1, String player2) {
 		System.out.println("working tilte V0.0");
