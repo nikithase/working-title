@@ -3,6 +3,7 @@ package client;
 import gamelogic.Command;
 import gamelogic.Gamelogic;
 import gui.AsciiGraphics;
+import gui.iGraphic;
 import network.ClientNetwork;
 import sound.Sound;
 
@@ -29,9 +30,12 @@ public class Client implements Runnable {
 
     private ClientNetwork network;
     private Gamelogic gamelogic;
-    private AsciiGraphics graphic;
+    private iGraphic graphic;
     private Thread mainloop;
 
+    /**
+     * 
+     */
     public Client() {
         network = new ClientNetwork();
         gamelogic = new Gamelogic();
@@ -39,12 +43,13 @@ public class Client implements Runnable {
         mainloop = new Thread(this);
         mainloop.setName("Clientmainloop");
 
+        //starts a Console Based Grafik
         graphic = new AsciiGraphics(this, gamelogic, size, size, PLAYER1, PLAYER2);
         Thread graphicsThread = new Thread(new Runnable() {
 
             @Override
             public void run() {
-                graphic.start();
+                graphic.initialize();
             }
         });
         graphicsThread.setName("graphicsThread");
@@ -54,9 +59,9 @@ public class Client implements Runnable {
     /**
      * Try to connect to a server. Returns true on success, false on failure.
      *
-     * @param host
-     * @param name
-     * @return
+     * @param host the IP of the server
+     * @param name the Name of the User
+     * @return return true if connection succeeded
      */
     public boolean connect(String host, String name) {
         boolean success = network.tryConnect(host, 12345, name);
@@ -91,8 +96,8 @@ public class Client implements Runnable {
         while (true) {
             Command command = network.receiveCommand();
             gamelogic.executeCommand(command);
-            graphic.render();
-            graphic.start();
+            graphic.refresh();
+            graphic.nextTurn();
         }
     }
 

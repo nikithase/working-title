@@ -3,6 +3,8 @@ package gamelogic;
 /**
  * 
  * @author Michael
+ * @author Thomas
+ * @author Ludwig
  */
 public class Unit {
 
@@ -45,6 +47,18 @@ public class Unit {
      */
     public String owner;
 
+    /**
+     * 
+     * Construct a new Unit
+     * 
+     * @param id			an unique ID
+     * @param hitpoints		Hitpoints
+     * @param posX			x Position
+     * @param posY			y Position
+     * @param movespeed		the movement speed of the Unit
+     * @param damage		the attack power
+     * @param owner			the owern
+     */
     public Unit(int id, int hitpoints, int posX, int posY, int movespeed,
             int damage, String owner) {
         this.id = id;

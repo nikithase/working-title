@@ -15,7 +15,7 @@ import sound.Sound;
  * @author Ludwig Biermann
  * @version 1.1
  */
-public class AsciiGraphics {
+public class AsciiGraphics implements iGraphic{
 
     private static final String EXIT = "exit";
     private static final String CONNECT = "connect";
@@ -69,20 +69,18 @@ public class AsciiGraphics {
 
     }
 
-    /**
-     *
-     * Prints text to the command line.
-     *
-     * @param text
-     */
-    public void printText(String text) {
+    @Override
+    public void showText(String text) {
         System.out.println(text);
     }
+    
+    @Override
+    public void nextTurn(){
+    	this.initialize();
+    }
 
-    /**
-     *
-     */
-    public void start() {
+    @Override
+    public void initialize() {
 
         boolean run = true;
 //		boolean connected = false;
@@ -149,7 +147,7 @@ public class AsciiGraphics {
                 System.out.print("connect to " + ip + " as " + name);
                 client.connect(ip, name);
 //				connected = true;
-                this.render();
+                this.refresh();
             } else if (command.equals(EXIT)) {
                 System.out.print("BYE BYE");
                 run = false;
@@ -174,7 +172,7 @@ public class AsciiGraphics {
      * renders the game new
      * 
      */
-    public void render(){
+    public void refresh(){
 
         this.showUnitList();
         this.showGamefield();
@@ -275,10 +273,16 @@ public class AsciiGraphics {
         }
     }
 
+    @Override
+    public String getVersion(){
+    	return VERSION;
+    }
+    
+    
     /**
      * prints the current Graphic Version
      */
-    public void printGraphicVersion() {
+    private void printGraphicVersion() {
         System.out.print(VERSION);
     }
 }
