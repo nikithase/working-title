@@ -1,12 +1,11 @@
 package network;
 
-import java.io.BufferedReader;
+import gamelogic.Command;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -14,8 +13,9 @@ import java.util.logging.Logger;
  */
 public class ClientNetwork {
 
-    private Socket socket;
-    private BufferedReader reader;
+    private final Socket socket;
+    private ObjectInputStream input;
+    private ObjectOutputStream output;
 
     public ClientNetwork() {
         socket = new Socket();
@@ -32,8 +32,10 @@ public class ClientNetwork {
     public boolean tryConnect(String host, int port, String name) {
         try {
             socket.connect(new InetSocketAddress(host, port));
-            socket.getOutputStream().write((name + "\n").getBytes());
-            reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            output = new ObjectOutputStream(socket.getOutputStream());
+            input = new ObjectInputStream(socket.getInputStream());
+            output.writeUTF(name);
+            output.flush();
             return true;
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -42,14 +44,14 @@ public class ClientNetwork {
     }
 
     /**
-     * send a byte message to the host.
+     * send a command to the host.
      *
-     * @param bytes
+     * @param command the command
      */
-    public void sendMessage(byte[] bytes) {
+    public void sendCommand(Command command) {
         try {
-            socket.getOutputStream().write(bytes);
-            socket.getOutputStream().write("\n".getBytes());
+           output.writeObject(command);
+           output.flush();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -61,14 +63,14 @@ public class ClientNetwork {
      *
      * @return receive an array of bytes from the host
      *
-     * @return the message
+     * @return the command
      */
-    public byte[] receiveMessage() {
+    public Command receiveCommand() {
         try {
-            return reader.readLine().getBytes();
-        } catch (IOException ex) {
+            return (Command) input.readObject();
+        } catch (IOException | ClassNotFoundException ex) {
             ex.printStackTrace();
-            return null;
         }
+        return null;
     }
 }

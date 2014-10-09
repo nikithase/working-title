@@ -71,7 +71,7 @@ public class Client implements Runnable {
      * @param command
      */
     public void sendCommand(Command command) {
-        network.sendMessage(command.toBytes());
+        network.sendCommand(command);
     }
 
     /**
@@ -87,7 +87,7 @@ public class Client implements Runnable {
     @Override
     public void run() {
         while (true) {
-            Command command = Command.fromBytes(network.receiveMessage());
+            Command command = network.receiveCommand();
             gamelogic.executeCommand(command);
             graphic.showGamefield();
         }

@@ -1,19 +1,12 @@
 package gamelogic;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.nio.ByteBuffer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.io.Serializable;
 
 /**
  *
  * @author Michael
  */
-public class Command {
+public class Command implements Serializable {
 
     public static final String ATTACK = "attack";
     public static final String MOVE = "move";
@@ -52,50 +45,4 @@ public class Command {
      * Target Y field
      */
     public int targetY;
-
-    /**
-     *
-     * Converts the command into bytes
-     *
-     * @return a array of bytes
-     */
-    public byte[] toBytes() {
-        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-        try {
-
-            ObjectOutputStream output = new ObjectOutputStream(buffer);
-            output.writeUTF(command);
-            output.writeInt(unitId);
-            output.writeInt(targetX);
-            output.writeInt(targetY);
-
-            output.flush();
-            output.close();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-
-        return buffer.toByteArray();
-    }
-
-    /**
-     *
-     * Interprets a byte array as a command
-     *
-     * @return a Command
-     */
-    public static Command fromBytes(byte bytes[]) {
-        ObjectInputStream input;
-        try {
-            input = new ObjectInputStream(new ByteArrayInputStream(bytes));
-            String command = input.readUTF();
-            int unitId = input.readInt();
-            int targetX = input.readInt();
-            int targetY = input.readInt();
-            return new Command(command, unitId, targetX, targetY);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            return null;
-        }
-    }
 }

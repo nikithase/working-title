@@ -1,12 +1,14 @@
 package network;
 
-import java.io.BufferedReader;
+import gamelogic.Command;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import server.ClientConnection;
 
 /**
  *
@@ -15,10 +17,9 @@ import java.util.List;
 public class ServerNetwork implements Runnable {
 
     private Thread clientAcceptorThread;
-    private ArrayList<byte[]> receivedMessages;
+    private ArrayList<Command> receivedMessages;
     ServerSocket serverSocket;
-    private ArrayList<String> clients;
-    private ArrayList<Socket> sockets;
+    private ArrayList<ClientConnection> clients;
 
     /**
      * Initializes the server and starts accepting clients.
@@ -27,7 +28,6 @@ public class ServerNetwork implements Runnable {
         try {
             receivedMessages = new ArrayList<>();
             clients = new ArrayList<>();
-            sockets = new ArrayList<>();
             serverSocket = new ServerSocket(12345);
             clientAcceptorThread = new Thread(this);
             clientAcceptorThread.setName("ServerNetwork.ClientAcceptorThread");
@@ -41,17 +41,17 @@ public class ServerNetwork implements Runnable {
     /**
      * Send message to all clients.
      *
-     * @param message
+     * @param command
      */
-    public void sendMessageToAll(byte[] message) {
-        for (Socket socket : sockets) {
+    public void sendMessageToAll(Command command) {
+        clients.stream().forEach((client) -> {
             try {
-                socket.getOutputStream().write(message);
-                socket.getOutputStream().write("\n".getBytes());
+                client.output.writeObject(command);
+                client.output.flush();
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
-        }
+        });
     }
 
     /**
@@ -59,8 +59,8 @@ public class ServerNetwork implements Runnable {
      *
      * @return a list of all received messages
      */
-    public List<byte[]> getMessages() {
-        ArrayList<byte[]> messages = new ArrayList<>();
+    public List<Command> getMessages() {
+        ArrayList<Command> messages = new ArrayList<>();
         messages.addAll(receivedMessages);
         receivedMessages.clear();
         return messages;
@@ -72,7 +72,7 @@ public class ServerNetwork implements Runnable {
      * @return a list of the connected clients
      */
     public List<String> getConnectedClients() {
-        return clients;
+        throw new UnsupportedOperationException("not implemented yet.");
     }
 
     @Override
@@ -80,32 +80,29 @@ public class ServerNetwork implements Runnable {
         while (true) {
             try {
                 Socket socket = serverSocket.accept();
-                sockets.add(socket);
-                BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                String name = reader.readLine();
-                clients.add(name);
-                System.out.println("[SERV]: New client " + name);
+                ClientConnection connection = new ClientConnection();
+                connection.socket = socket;
+                connection.output = new ObjectOutputStream(socket.getOutputStream());
+                connection.input = new ObjectInputStream(socket.getInputStream());
+                connection.name = connection.input.readUTF();
+                System.out.println("[SERV]: New client " + connection.name);
 
-                Thread messageReceiveThread = new Thread(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        try {
-                            while (true) {
-                                String message = reader.readLine();
-                                if (message == null) {
-                                    System.out.println("[SERV]: " + name + " disconnected (eof)");
-                                    break;
-                                }
-                                receivedMessages.add(message.getBytes());
+                Thread messageReceiveThread = new Thread(() -> {
+                    try {
+                        while (true) {
+                            Command command = (Command) connection.input.readObject();
+                            if (command == null) {
+                                System.out.println("[SERV]: " + connection.name + " disconnected (eof)");
+                                break;
                             }
-                        } catch (IOException ex) {
-                            ex.printStackTrace();
-                            System.out.println("[SERV]: " + name + " disconnected (exception)");
+                            receivedMessages.add(command);
                         }
+                    } catch (IOException | ClassNotFoundException ex) {
+                        ex.printStackTrace();
+                        System.out.println("[SERV]: " + connection.name + " disconnected (exception)");
                     }
                 });
-                messageReceiveThread.setName("messageReceiveThread for " + name);
+                messageReceiveThread.setName("messageReceiveThread for " + connection.name);
                 messageReceiveThread.start();
 
             } catch (IOException ex) {

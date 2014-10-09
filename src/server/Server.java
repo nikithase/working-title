@@ -1,5 +1,6 @@
 package server;
 
+import gamelogic.Command;
 import java.util.List;
 import network.ServerNetwork;
 
@@ -25,11 +26,11 @@ public class Server {
         while (true) {
             try {
                 Thread.sleep(100);
-                List<byte[]> messages = network.getMessages();
+                List<Command> messages = network.getMessages();
                 if (!messages.isEmpty()) {
-                    for (byte[] message : messages) {
+                    for (Command message : messages) {
                         network.sendMessageToAll(message);
-                        System.out.println("message received: " + new String(message));
+                        System.out.println("message received: " + message.command);
                     }
                 }
             } catch (InterruptedException ex) {
