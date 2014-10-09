@@ -86,6 +86,7 @@ public class ServerNetwork implements Runnable {
                 connection.output = new ObjectOutputStream(socket.getOutputStream());
                 connection.input = new ObjectInputStream(socket.getInputStream());
                 connection.name = connection.input.readUTF();
+                clients.add(connection);
                 System.out.println("[SERV]: New client " + connection.name);
 
                 Thread messageReceiveThread = new Thread(() -> {
