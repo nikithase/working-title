@@ -54,15 +54,33 @@ public class UnitList extends JPanel {
 			
 			if(u.owner.equals(player_name)){
 				img = TextureLib.wBauer;
+				g.setColor(Color.black);
 				
 			}else {
 				img = TextureLib.sBauer;
+				g.setColor(Color.white);
 			}
 			
-			
 			g.drawImage(img, 0, count * size, size, size, this);
+
+
+			/**
+			 * Draw Nummber
+			 */
+			
+			String id = "" + u.id;
+			
+			int midx = 0			+ (size/2) - id.length()/2 - 3;
+			int midy = count * size + (size/2) + this.getFont().getSize()/2;
+			
+			g.drawString(id, midx, midy);
+
+			/**
+			 * Draw Status
+			 */
 			
 			
+			g.setColor(Color.black);
 			Font f = new Font(getFont().getFamily(), getFont().getStyle(), size/4);
 			g.setFont(f);
 			

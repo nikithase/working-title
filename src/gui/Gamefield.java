@@ -77,10 +77,23 @@ public class Gamefield extends JPanel implements MouseListener {
 
 		for (CellUnit u : units) {
 			if (player.equals(u.owner)) {
+				g.setColor(Color.black);
 				g.drawImage(TextureLib.wBauer, u.r.x, u.r.y, this);
 			} else {
+				g.setColor(Color.white);
 				g.drawImage(TextureLib.sBauer, u.r.x, u.r.y, this);
 			}
+			
+			/**
+			 * Draw Nummber
+			 */
+			
+			String id = "" + u.id;
+			
+			int midx = u.r.x + (tile_size/2) - id.length()/2 - 3;
+			int midy = u.r.y + (tile_size/2) + this.getFont().getSize()/2;
+			
+			g.drawString(id, midx, midy);
 		}
 
 		if (l_unit != -1) {
