@@ -1,7 +1,10 @@
 package gui;
 
+import gamelogic.Unit;
+
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.List;
 
 import javax.swing.JPanel;
 
@@ -26,5 +29,10 @@ public class UnitList extends JPanel {
 		
 		g.drawLine(0, 0, 0, height);
 	  }
+
+	public void refresh(List<Unit> units) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

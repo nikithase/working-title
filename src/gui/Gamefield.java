@@ -1,7 +1,11 @@
 package gui;
 
+import gamelogic.Unit;
+
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.JPanel;
 
@@ -15,14 +19,19 @@ public class Gamefield extends JPanel {
 	
 	private int tile_size;
 	
+	private List<Unit> units;
 	
-	public Gamefield(int width, int height, int amount_x, int amount_y, int tile_size){
+	private String player;
+	
+	public Gamefield(int width, int height, int amount_x, int amount_y, int tile_size, String player){
 		this.width = width;
 		this.height = height;
 		this.amount_x = amount_x;
 		this.amount_y = amount_y;
 		this.tile_size = tile_size;
+		this.player = player;
 		
+		this.units = new LinkedList<Unit>();
 		//this.setBackground(Color.black);
 	}
 	
@@ -45,6 +54,23 @@ public class Gamefield extends JPanel {
 			}
 		}
 		
+		for(Unit u: units){
+			if(player.equals(u.owner)){
+				g.drawImage(TextureLib.wBauer, u.posX * tile_size, u.posY * tile_size, this);
+			} else {
+				g.drawImage(TextureLib.sBauer, u.posX * tile_size, u.posY * tile_size, this);
+			}
+		}
+		
 	  }
+
+	/**
+	 * 
+	 * @param units
+	 */
+	public void refresh(List<Unit> units) {
+		this.units = units;
+		this.repaint();
+	}
 
 }
