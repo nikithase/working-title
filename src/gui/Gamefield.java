@@ -27,6 +27,7 @@ public class Gamefield extends JPanel implements MouseListener {
 
 	private List<CellUnit> units;
 	private List<Rectangle> l_unit_path;
+	private List<Rectangle> l_e_unit_path;
 	private int l_unit;
 
 	private String player;
@@ -46,6 +47,8 @@ public class Gamefield extends JPanel implements MouseListener {
 		this.player = player;
 
 		this.units = new LinkedList<CellUnit>();
+		this.l_unit_path = new LinkedList<Rectangle>();
+		this.l_e_unit_path = new LinkedList<Rectangle>();
 		// this.setBackground(Color.black);
 
 		l_unit = -1;
@@ -100,11 +103,11 @@ public class Gamefield extends JPanel implements MouseListener {
 	 * returns a List of Cells for a possible Path
 	 * 
 	 * @param u
-	 * @return
 	 */
-	private List<Rectangle> computePossiblePath(CellUnit u) {
+	private void computePossiblePath(CellUnit u) {
 
-		List<Rectangle> cors = new LinkedList<Rectangle>();
+		l_unit_path = new LinkedList<Rectangle>();
+		l_e_unit_path = new LinkedList<Rectangle>();
 
 		int startx = u.r.x - (u.speed * tile_size);
 		int starty = u.r.y - (u.speed * tile_size);
@@ -118,14 +121,19 @@ public class Gamefield extends JPanel implements MouseListener {
 				System.out.println("test");
 
 				if (getUnitID(x, y) == -1) {
-					cors.add(new Rectangle(x, y, tile_size, tile_size));
+					l_unit_path.add(new Rectangle(x, y, tile_size, tile_size));
+				} else {
+					System.out.print( getUnitID(x,y)  + "x" +l_unit);
+					if(getUnitID(x,y) != l_unit){
+						l_e_unit_path.add(new Rectangle(x, y, tile_size, tile_size));
+					}
 				}
 			}
 		}
 
-		System.out.println("Possible Paths: " + cors.size());
+		System.out.println("Possible Paths: " + l_unit_path.size());
+		System.out.println("Possible Enemys: " + l_e_unit_path.size());
 
-		return cors;
 	}
 
 	private CellUnit getCellUnit(int id) {
@@ -178,39 +186,34 @@ public class Gamefield extends JPanel implements MouseListener {
 		return false;
 	}
 
+	private boolean containEpath(int x, int y) {
+		for (Rectangle c : l_e_unit_path) {
+			if (c.contains(x, y)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private boolean checkOwnership(int id) {
+
+		for (CellUnit u : units) {
+			if (u.id == id) {
+				if (u.owner.equals(player)) {
+					return true;
+				} else {
+					return false;
+				}
+			}
+		}
+
+		return false;
+	}
+
 	@Override
 	public void mouseClicked(MouseEvent e) {
 
-		if (l_unit != -1 && l_unit_path.size() != 0) {
-			if (containpath(e.getX(), e.getY())) {
-
-				int x = e.getX() / tile_size;
-				int y = e.getY() / tile_size;
-				Command c = new Command(Command.MOVE, l_unit, x, y);
-				System.out.println(c.toString());
-
-				
-				/** test umgebung **/
-				logic.executeCommand(c);
-				
-				this.refresh(logic.getUnits());
-			}
-
-		}
-
-		l_unit = -1;
-
-		System.out.println("Mouse: click on Gamefield: " + e.getX() + "x" + e.getY());
-
-		int id = getUnitID(e.getX(), e.getY());
-
-		if (id != -1) {
-
-			l_unit = id;
-			l_unit_path = this.computePossiblePath(this.getCellUnit(l_unit));
-
-		}
-		repaint();
 
 	}
 
@@ -220,9 +223,85 @@ public class Gamefield extends JPanel implements MouseListener {
 
 	}
 
+	
+	/**
+	 * TEST ZWECKE
+	 * @param canvas
+	 */
+	CanvasGraphic2D canvas;
+	
+	public void setCanvas(CanvasGraphic2D canvas){
+		this.canvas = canvas;
+	}
+	
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		System.out.println("Mouse: released on Gamefield");
+		
+
+		if (l_unit != -1 && l_unit_path.size() != 0) {
+			if (containpath(e.getX(), e.getY())) {
+
+				int x = e.getX() / tile_size;
+				int y = e.getY() / tile_size;
+
+				if (checkOwnership(l_unit)) {
+
+					Command c = new Command(Command.MOVE, l_unit, x, y);
+					System.out.println(c.toString());
+					logic.executeCommand(c);
+
+					/** test umgebung **/
+					this.canvas.refresh();
+					
+					
+				} else {
+					System.out.println("not your unit!");
+					repaint();
+				}
+
+			}
+
+			if (containEpath(e.getX(), e.getY())) {
+
+				int x = e.getX() / tile_size;
+				int y = e.getY() / tile_size;
+
+				if (checkOwnership(l_unit)) {
+
+					Command c = new Command(Command.ATTACK, l_unit, x, y);
+					System.out.println(c.toString());
+					logic.executeCommand(c);
+
+					/** test umgebung **/
+					this.canvas.refresh();
+					
+					
+				} else {
+					System.out.println("not your unit!");
+					repaint();
+				}
+			}
+
+			l_unit = -1;
+
+		} else {
+
+			l_unit = -1;
+
+			System.out.println("Mouse: click on Gamefield: " + e.getX() + "x" + e.getY());
+
+			int id = getUnitID(e.getX(), e.getY());
+
+			if (id != -1) {
+
+				l_unit = id;
+				this.computePossiblePath(this.getCellUnit(l_unit));
+
+			}
+
+			repaint();
+		}
 
 	}
 
