@@ -1,0 +1,22 @@
+Server:
+
+Auf Spieler warten
+Startkonfig and die Spieler schicken (Starteinheiten)
+abwechselnd die Spieler 30 sec lang ziehen lassen
+	wenn der Spieler zieht oder der Timer abläut ist der nächste dran
+Chatnachrichten werden immer weitergeleitet
+Die Spielerzüge werden vom Server auf gültigkeit überprüft
+gültige Züge werden an alle Spieler gesendet
+
+
+Client:
+
+Client verbindet sich mit Name und Startheld zum Server
+Dann wartet er auf das Startsignal vom Server
+Dann zeigt er das Spielfeld an
+Dann wartet er bis er dran ist
+Der Spieler kann dann einen (oder mehrere) Befehle geben
+Wenn der Server ein Kommando schickt zeigt der Client das an
+
+
+
