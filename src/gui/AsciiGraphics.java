@@ -135,6 +135,9 @@ public class AsciiGraphics {
                     System.out.println("Iterpreted Command: " + c.toString());
 
                     client.sendCommand(c);
+                    
+                    run = false;
+                    
                 } else {
                     System.out.println("ERROR: Unit not found");
                     this.printHelp();

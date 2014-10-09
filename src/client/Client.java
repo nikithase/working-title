@@ -92,6 +92,7 @@ public class Client implements Runnable {
             Command command = network.receiveCommand();
             gamelogic.executeCommand(command);
             graphic.render();
+            graphic.start();
         }
     }
 
