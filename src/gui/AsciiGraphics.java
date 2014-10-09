@@ -78,6 +78,20 @@ public class AsciiGraphics implements iGraphic{
     public void nextTurn(){
     	this.initialize();
     }
+    
+    private String readLine(){
+    	 // reads command
+        BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
+        System.out.println("\n");
+        System.out.print("Command: ");
+        String line = null;
+        try {
+            line = console.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    	return line;
+    }
 
     @Override
     public void initialize() {
@@ -87,16 +101,7 @@ public class AsciiGraphics implements iGraphic{
 
         while (run) {
 
-            // reads command
-            BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
-            System.out.println("\n");
-            System.out.print("Command: ");
-            String line = null;
-            try {
-                line = console.readLine();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            String line  = readLine();
 
             String command = line.split(" ", 2)[0];
 
@@ -147,7 +152,8 @@ public class AsciiGraphics implements iGraphic{
                 System.out.print("connect to " + ip + " as " + name);
                 client.connect(ip, name);
 //				connected = true;
-                this.refresh();
+//                this.refresh();
+                run = false;
             } else if (command.equals(EXIT)) {
                 System.out.print("BYE BYE");
                 run = false;
@@ -160,10 +166,7 @@ public class AsciiGraphics implements iGraphic{
 //				}
                 this.printHelp();
             }
-
-
         }
-
     }
     
     

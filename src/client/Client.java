@@ -69,6 +69,8 @@ public class Client implements Runnable {
 //            Sound.playSound("wolfe.wav");
             mainloop.start();
         }
+        graphic.refresh();
+        graphic.nextTurn();
         return success;
     }
 
