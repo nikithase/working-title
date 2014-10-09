@@ -47,4 +47,9 @@ public class Command implements Serializable {
      * Target Y field
      */
     public int targetY;
+    
+    @Override
+    public String toString(){
+    	return "Command: " + command + " Unit ID: " + unitId + " targetX: " + targetX + " targetY: " + targetY;
+    }
 }
