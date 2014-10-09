@@ -6,6 +6,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
 import server.ClientConnection;
@@ -91,12 +92,10 @@ public class ServerNetwork implements Runnable {
                     try {
                         while (true) {
                             Command command = (Command) connection.input.readObject();
-                            if (command == null) {
-                                System.out.println("[SERV]: " + connection.name + " disconnected (eof)");
-                                break;
-                            }
                             receivedMessages.add(command);
                         }
+                    } catch (SocketException ex) {
+                        System.out.println("[SERV]: " + connection.name + " disconnected (eof)");
                     } catch (IOException | ClassNotFoundException ex) {
                         ex.printStackTrace();
                         System.out.println("[SERV]: " + connection.name + " disconnected (exception)");
