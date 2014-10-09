@@ -146,6 +146,7 @@ public class AsciiGraphics {
                 System.out.print("connect to " + ip + " as " + name);
                 client.connect(ip, name);
 //				connected = true;
+                this.render();
             } else if (command.equals(EXIT)) {
                 System.out.print("BYE BYE");
                 run = false;
@@ -159,11 +160,21 @@ public class AsciiGraphics {
                 this.printHelp();
             }
 
-            this.showUnitList();
 
-            this.showGamefield();
         }
 
+    }
+    
+    
+    /**
+     * 
+     * renders the game new
+     * 
+     */
+    public void render(){
+
+        this.showUnitList();
+        this.showGamefield();
     }
 
     /**
@@ -207,7 +218,7 @@ public class AsciiGraphics {
     /**
      * 0 := empty Field X := Player 1 Y := Player 2
      */
-    public void showGamefield() {
+    private void showGamefield() {
 
         String[][] field = new String[sizeX][sizeY];
 
