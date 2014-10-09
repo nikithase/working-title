@@ -1,13 +1,19 @@
 package gui;
 
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import gamelogic.Gamelogic;
 import gui.canvas.graphic2d.FocusedUnit;
 import gui.canvas.graphic2d.Gamefield;
 import gui.canvas.graphic2d.TextureLib;
 import gui.canvas.graphic2d.UnitList;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import client.Client;
 
@@ -18,7 +24,7 @@ import client.Client;
  * @author Ludwig Biermann
  *
  */
-public class CanvasGraphic2D extends JPanel implements iGraphic {
+public class CanvasGraphic2D extends JPanel implements iGraphic,ActionListener {
 
 	private static final long serialVersionUID = -9014567225901557748L;
 
@@ -53,6 +59,15 @@ public class CanvasGraphic2D extends JPanel implements iGraphic {
 
 	private Client client;
 
+	
+	private JFrame login;
+	
+	private JTextField ip_e;
+	private JTextField player_e;
+	
+	
+	private boolean run;
+	
 	/**
 	 * testing function
 	 * 
@@ -85,6 +100,7 @@ public class CanvasGraphic2D extends JPanel implements iGraphic {
 	 */	
 	public CanvasGraphic2D(Gamelogic logic, int size_x, int size_y, String player_name, Client client) {
 		this(logic, size_x, size_y, player_name);
+		System.out.println(client == null);
 		this.client = client;
 	}
 
@@ -122,6 +138,58 @@ public class CanvasGraphic2D extends JPanel implements iGraphic {
 	@Override
 	public void initialize() {
 
+		// ask ip and name
+		
+		
+
+		login = new JFrame("Login@RofL@" + VERSION);
+		login.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		login.setLayout(new GridLayout(0,2));
+		
+		
+
+		JTextField player_t = new JTextField("Player Name: ");
+		player_t.setEditable(false);
+		
+		player_e = new JTextField("Klaus");
+		player_e.setEditable(true);
+		
+		JTextField ip_t = new JTextField("IP Adresse: ");
+		ip_t.setEditable(false);
+		
+		ip_e = new JTextField("127.0.0.1");
+		ip_e.setEditable(true);
+
+		
+		
+		
+		JButton login_b = new JButton("login");
+		login_b.addActionListener(this);
+		
+		login.add(player_t);
+		login.add(player_e);
+		login.add(ip_t);
+		login.add(ip_e);
+		login.add(new JPanel());
+		login.add(login_b);
+		
+		login.setSize(300, 150);
+		login.setVisible(true);
+		
+		run = false;
+		
+	
+
+	}
+	
+	/**
+	 * initialize with login informaion
+	 * 
+	 * @param ip
+	 * @param player
+	 */
+	private void initializeGame(String ip, String player){
 		// load Texture
 		new TextureLib();
 
@@ -151,8 +219,11 @@ public class CanvasGraphic2D extends JPanel implements iGraphic {
 		f.setSize(max_width, max_height);
 		f.setVisible(true);
 		
-		client.connect("127.0.0.1", player);
-
+		System.out.println(client == null);
+		//testzwecke
+		if(client != null){
+			client.connect(ip, player);
+		}
 	}
 
 	@Override
@@ -169,14 +240,27 @@ public class CanvasGraphic2D extends JPanel implements iGraphic {
 
 	@Override
 	public void refresh() {
-		field.refresh(logic.getUnits());
-		list.refresh(logic.getUnits());
+		if(run){
+			field.refresh(logic.getUnits());
+			list.refresh(logic.getUnits());
+		}
 
 	}
 
 	@Override
 	public String getVersion() {
 		return VERSION;
+	}
+
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		
+		System.out.println("login: " + ip_e.getText() + " | " + player_e.getText());
+		
+		this.initializeGame(ip_e.getText(), player_e.getText());
+		
+		login.setVisible(false);
 	}
 
 }
