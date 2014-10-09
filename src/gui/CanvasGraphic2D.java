@@ -91,7 +91,7 @@ public class CanvasGraphic2D extends JPanel implements iGraphic {
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// create Components
-		field = new Gamefield(gamefield_width, gamefield_height, size_x, size_y, TILE_SIZE, player_name);
+		field = new Gamefield(gamefield_width, gamefield_height, size_x, size_y, TILE_SIZE, player_name, logic);
 		list = new UnitList(UNITLIST_WIDTH, gamefield_height,player_name);
 		unit = new FocusedUnit(max_width, FOCUSEDUNIT_HEIGHT);
 
