@@ -39,7 +39,7 @@ public class Gamefield extends JPanel {
 	  protected void paintComponent( Graphics g )
 	  {
 	    super.paintComponent( g );
-		g.drawString("Gamefield", width/2, height/2);
+//		g.drawString("Gamefield", width/2, height/2);
 		
 		g.setColor(Color.lightGray);
 		

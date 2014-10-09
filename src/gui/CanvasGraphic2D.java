@@ -92,7 +92,7 @@ public class CanvasGraphic2D extends JPanel implements iGraphic {
 
 		// create Components
 		field = new Gamefield(gamefield_width, gamefield_height, size_x, size_y, TILE_SIZE, player_name);
-		list = new UnitList(UNITLIST_WIDTH, gamefield_height);
+		list = new UnitList(UNITLIST_WIDTH, gamefield_height,player_name);
 		unit = new FocusedUnit(max_width, FOCUSEDUNIT_HEIGHT);
 
 		field.setBounds(0, 0, gamefield_width, gamefield_height);
