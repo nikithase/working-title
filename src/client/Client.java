@@ -3,6 +3,7 @@ package client;
 import gamelogic.Command;
 import gamelogic.Gamelogic;
 import gui.AsciiGraphics;
+import gui.CanvasGraphic2D;
 import gui.iGraphic;
 import network.ClientNetwork;
 import sound.Sound;
@@ -26,7 +27,7 @@ public class Client implements Runnable {
     /**
      * size of field
      */
-    public final static int size = 10;
+    public final static int size = 11;
 
     private ClientNetwork network;
     private Gamelogic gamelogic;
@@ -44,7 +45,9 @@ public class Client implements Runnable {
         mainloop.setName("Clientmainloop");
 
         //starts a Console Based Grafik
-        graphic = new AsciiGraphics(this, gamelogic, size, size, PLAYER1, PLAYER2);
+        //graphic = new AsciiGraphics(this, gamelogic, size, size, PLAYER1, PLAYER2);
+        
+        graphic = new CanvasGraphic2D(gamelogic, size, size, PLAYER1, this);
         
         Thread graphicsThread = new Thread(new Runnable() {
 

@@ -46,13 +46,16 @@ public class UnitList extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		if(units.size() != 0){
 		g.drawString("Unit List", 0, 0);
 
 		g.drawLine(0, 0, 0, height);
 
 		int size = units.size();
 
-		size = height / size;
+			size = height / size;
+			
+		
 
 		int count = 0;
 
@@ -99,6 +102,7 @@ public class UnitList extends JPanel {
 			g.drawString("Movement Speed: " + u.movespeed, size + 5, count * size + (3 * size / 3));
 
 			count++;
+		}
 		}
 
 	}

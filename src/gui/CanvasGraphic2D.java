@@ -49,7 +49,7 @@ public class CanvasGraphic2D extends JPanel implements iGraphic {
 	private UnitList list;
 	private FocusedUnit unit;
 
-	private String player_name;
+	private String player;
 
 	private Client client;
 
@@ -102,10 +102,12 @@ public class CanvasGraphic2D extends JPanel implements iGraphic {
 	 */
 	public CanvasGraphic2D(Gamelogic logic, int size_x, int size_y, String player_name) {
 
-		this.player_name = player_name;
+		this.player = player_name;
 
 		this.logic = logic;
 
+		System.out.println("StartUnits: " + logic.getUnits().size());
+		
 		// compute sizes
 		this.size_x = size_x;
 		this.size_y = size_y;
@@ -129,11 +131,11 @@ public class CanvasGraphic2D extends JPanel implements iGraphic {
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// create Components
-		unit = new FocusedUnit(max_width, FOCUSEDUNIT_HEIGHT, player_name);
-		field = new Gamefield(size_x, size_y, TILE_SIZE, player_name, logic, unit, client);
+		unit = new FocusedUnit(max_width, FOCUSEDUNIT_HEIGHT, player);
+		field = new Gamefield(size_x, size_y, TILE_SIZE, player, logic, unit, client);
 		/** TEST ZWECKE */
 		field.setCanvas(this);
-		list = new UnitList(UNITLIST_WIDTH, gamefield_height, player_name);
+		list = new UnitList(UNITLIST_WIDTH, gamefield_height, player);
 
 		field.setBounds(0, 0, gamefield_width, gamefield_height);
 		list.setBounds(gamefield_width, 0, UNITLIST_WIDTH, gamefield_height);
@@ -144,8 +146,12 @@ public class CanvasGraphic2D extends JPanel implements iGraphic {
 		f.add(unit);
 		f.add(new JPanel());
 
+		this.refresh();
+		
 		f.setSize(max_width, max_height);
 		f.setVisible(true);
+		
+		client.connect("127.0.0.1", player);
 
 	}
 
