@@ -1,26 +1,38 @@
 package gui;
 
 import gamelogic.Gamelogic;
+import gui.canvas.graphic2d.FocusedUnit;
+import gui.canvas.graphic2d.Gamefield;
+import gui.canvas.graphic2d.TextureLib;
+import gui.canvas.graphic2d.UnitList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import client.Client;
+
 /**
+ * 
+ * This class creates a simple 2d Grafik Engine
  * 
  * @author Ludwig Biermann
  *
  */
 public class CanvasGraphic2D extends JPanel implements iGraphic {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -9014567225901557748L;
 
-	public final static int TILE_SIZE = 40;
-	public final static int UNITLIST_WIDTH = 200;
-	public final static int FOCUSEDUNIT_HEIGHT = 150;
-	private static final String VERSION = "CanvasGraphic2D v0.1";
+	/**
+	 * Size of the graphic Elements
+	 */
+	private final static int TILE_SIZE = 40;
+	private final static int UNITLIST_WIDTH = 200;
+	private final static int FOCUSEDUNIT_HEIGHT = 150;
+
+	/**
+	 * Version
+	 */
+	public static final String VERSION = "CanvasGraphic2D v1.0";
 
 	private int size_x;
 	private int size_y;
@@ -32,15 +44,17 @@ public class CanvasGraphic2D extends JPanel implements iGraphic {
 	private int max_height;
 
 	private Gamelogic logic;
-	
+
 	private Gamefield field;
 	private UnitList list;
 	private FocusedUnit unit;
-	
+
 	private String player_name;
-	
+
+	private Client client;
+
 	/**
-	 * testing funktion
+	 * testing function
 	 * 
 	 * @param args
 	 */
@@ -48,26 +62,50 @@ public class CanvasGraphic2D extends JPanel implements iGraphic {
 
 		Gamelogic logic = new Gamelogic();
 		logic.initTestState();
-		
-		CanvasGraphic2D graphics = new CanvasGraphic2D(logic, 10, 10, "Klaus");
+
+		CanvasGraphic2D graphics = new CanvasGraphic2D(logic, 11, 11, "Klaus");
 		graphics.initialize();
 		graphics.refresh();
-		
+
+	}
+
+
+	/**
+	 * Creates a new Canvas Graphic2D Engine
+	 * 
+	 * @param logic
+	 *            the Logic System
+	 * @param size_x
+	 *            width of the field
+	 * @param size_y
+	 *            height of the field
+	 * @param player_name
+	 *            the player name
+	 * @param client the client ... needed to  connect to server and send commands 
+	 */	
+	public CanvasGraphic2D(Gamelogic logic, int size_x, int size_y, String player_name, Client client) {
+		this(logic, size_x, size_y, player_name);
+		this.client = client;
 	}
 
 	/**
 	 * Creates a new Canvas Graphic2D Engine
 	 * 
 	 * @param logic
+	 *            the Logic System
 	 * @param size_x
+	 *            width of the field
 	 * @param size_y
+	 *            height of the field
+	 * @param player_name
+	 *            the player name
 	 */
 	public CanvasGraphic2D(Gamelogic logic, int size_x, int size_y, String player_name) {
-		
+
 		this.player_name = player_name;
-		
+
 		this.logic = logic;
-		
+
 		// compute sizes
 		this.size_x = size_x;
 		this.size_y = size_y;
@@ -81,21 +119,21 @@ public class CanvasGraphic2D extends JPanel implements iGraphic {
 
 	@Override
 	public void initialize() {
-		
+
 		// load Texture
 		new TextureLib();
 
 		// create Window
-		
+
 		JFrame f = new JFrame("RofL@" + VERSION);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// create Components
 		unit = new FocusedUnit(max_width, FOCUSEDUNIT_HEIGHT, player_name);
-		field = new Gamefield(gamefield_width, gamefield_height, size_x, size_y, TILE_SIZE, player_name, logic, unit);
-		/**  TEST ZWECKE */
+		field = new Gamefield(size_x, size_y, TILE_SIZE, player_name, logic, unit, client);
+		/** TEST ZWECKE */
 		field.setCanvas(this);
-		list = new UnitList(UNITLIST_WIDTH, gamefield_height,player_name);
+		list = new UnitList(UNITLIST_WIDTH, gamefield_height, player_name);
 
 		field.setBounds(0, 0, gamefield_width, gamefield_height);
 		list.setBounds(gamefield_width, 0, UNITLIST_WIDTH, gamefield_height);
@@ -113,8 +151,8 @@ public class CanvasGraphic2D extends JPanel implements iGraphic {
 
 	@Override
 	public void nextTurn() {
-		// TODO Auto-generated method stub
-
+		field.refresh(logic.getUnits());
+		list.refresh(logic.getUnits());
 	}
 
 	@Override
@@ -127,14 +165,12 @@ public class CanvasGraphic2D extends JPanel implements iGraphic {
 	public void refresh() {
 		field.refresh(logic.getUnits());
 		list.refresh(logic.getUnits());
-		
 
 	}
 
 	@Override
 	public String getVersion() {
-		// TODO Auto-generated method stub
-		return null;
+		return VERSION;
 	}
 
 }

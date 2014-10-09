@@ -45,6 +45,7 @@ public class Client implements Runnable {
 
         //starts a Console Based Grafik
         graphic = new AsciiGraphics(this, gamelogic, size, size, PLAYER1, PLAYER2);
+        
         Thread graphicsThread = new Thread(new Runnable() {
 
             @Override

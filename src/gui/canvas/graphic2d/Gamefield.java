@@ -1,8 +1,9 @@
-package gui;
+package gui.canvas.graphic2d;
 
 import gamelogic.Command;
 import gamelogic.Gamelogic;
 import gamelogic.Unit;
+import gui.CanvasGraphic2D;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -13,13 +14,20 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import client.Client;
+
 import com.sun.javafx.geom.Rectangle;
 
+/**
+ * 
+ * This class creates the graphical gamefield
+ * 
+ * @author Ludwig Biermann
+ *
+ */
 public class Gamefield extends JPanel implements MouseListener {
 
-	private int width;
-	private int height;
-
+	private static final long serialVersionUID = 1436708090503344352L;
 	private int amount_x;
 	private int amount_y;
 
@@ -37,11 +45,32 @@ public class Gamefield extends JPanel implements MouseListener {
 	private final static Color LOCKED_CELLS_PATH = new Color(0, 0, 255, 50);
 
 	private Gamelogic logic;
+	private Client client;
 	private FocusedUnit focused;
 
-	public Gamefield(int width, int height, int amount_x, int amount_y, int tile_size, String player, Gamelogic logic, FocusedUnit focused) {
-		this.width = width;
-		this.height = height;
+	/**
+	 * 
+	 * Creates a new Gamefield
+	 * 
+	 * @param amount_x
+	 *            Amount of tiles in x direction
+	 * @param amount_y
+	 *            Amount of tiles in y direction
+	 * @param tile_size
+	 *            the size of the tiles in pixel
+	 * @param player
+	 *            name of the player
+	 * @param logic
+	 *            the game logic
+	 * @param focused
+	 *            the gui to show a unit
+	 * @param client
+	 *            needed to send commands
+	 */
+	public Gamefield(int amount_x, int amount_y, int tile_size, String player, Gamelogic logic, FocusedUnit focused, Client client) {
+
+		this.client = client;
+
 		this.amount_x = amount_x;
 		this.amount_y = amount_y;
 		this.tile_size = tile_size;
@@ -85,16 +114,16 @@ public class Gamefield extends JPanel implements MouseListener {
 				g.setColor(Color.white);
 				g.drawImage(TextureLib.sBauer, u.r.x, u.r.y, this);
 			}
-			
+
 			/**
 			 * Draw Nummber
 			 */
-			
+
 			String id = "" + u.id;
-			
-			int midx = u.r.x + (tile_size/2) - id.length()/2 - 3;
-			int midy = u.r.y + (tile_size/2) + this.getFont().getSize()/2;
-			
+
+			int midx = u.r.x + (tile_size / 2) - id.length() / 2 - 3;
+			int midy = u.r.y + (tile_size / 2) + this.getFont().getSize() / 2;
+
 			g.drawString(id, midx, midy);
 		}
 
@@ -112,7 +141,6 @@ public class Gamefield extends JPanel implements MouseListener {
 			}
 
 		}
-		
 
 	}
 
@@ -121,7 +149,7 @@ public class Gamefield extends JPanel implements MouseListener {
 	 * 
 	 * @param u
 	 */
-	private void computePossiblePath(CellUnit u) {
+	private void computePossibleCellActions(CellUnit u) {
 
 		l_unit_path = new LinkedList<Rectangle>();
 		l_e_unit_path = new LinkedList<Rectangle>();
@@ -137,11 +165,13 @@ public class Gamefield extends JPanel implements MouseListener {
 
 				System.out.println("test");
 
-				if (getUnitID(x, y) == -1) {
+				int id = getUnitID(x, y);
+
+				if (id == -1) {
 					l_unit_path.add(new Rectangle(x, y, tile_size, tile_size));
 				} else {
-					System.out.print( getUnitID(x,y)  + "x" +l_unit);
-					if(getUnitID(x,y) != l_unit){
+					System.out.print(getUnitID(x, y) + "x" + l_unit);
+					if (!getCellUnit(id).owner.equals(player)) {
 						l_e_unit_path.add(new Rectangle(x, y, tile_size, tile_size));
 					}
 				}
@@ -153,6 +183,12 @@ public class Gamefield extends JPanel implements MouseListener {
 
 	}
 
+	/**
+	 * returns a Cell Unit by id
+	 * 
+	 * @param id
+	 * @return
+	 */
 	private CellUnit getCellUnit(int id) {
 		for (CellUnit u : units) {
 			if (u.id == id) {
@@ -163,25 +199,44 @@ public class Gamefield extends JPanel implements MouseListener {
 	}
 
 	/**
+	 * Refresh the gamefield
 	 * 
 	 * @param units
 	 */
 	public void refresh(List<Unit> units) {
 		this.units = convertUnits(units);
+		CellUnit tmp = this.getCellUnit(l_unit);
+		if (tmp != null) {
+			this.computePossibleCellActions(tmp);
+
+		}
 		this.repaint();
 	}
 
+	/**
+	 * Extend a Unit by an Rectangle
+	 * 
+	 * @param units
+	 * @return
+	 */
 	private List<CellUnit> convertUnits(List<Unit> units) {
 
 		LinkedList<CellUnit> tmp = new LinkedList<CellUnit>();
 
 		for (Unit u : units) {
-			tmp.add(new CellUnit(new Rectangle(u.posX * tile_size, u.posY * tile_size, tile_size, tile_size),u));
+			tmp.add(new CellUnit(new Rectangle(u.posX * tile_size, u.posY * tile_size, tile_size, tile_size), u));
 		}
 
 		return tmp;
 	}
 
+	/**
+	 * returns a Unit id by his coordinates
+	 * 
+	 * @param x
+	 * @param y
+	 * @return
+	 */
 	private int getUnitID(int x, int y) {
 
 		for (CellUnit u : units) {
@@ -193,7 +248,14 @@ public class Gamefield extends JPanel implements MouseListener {
 		return -1;
 	}
 
-	private boolean containpath(int x, int y) {
+	/**
+	 * check if a cell contains the coordinates
+	 * 
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	private boolean containCellPath(int x, int y) {
 		for (Rectangle c : l_unit_path) {
 			if (c.contains(x, y)) {
 				return true;
@@ -203,7 +265,14 @@ public class Gamefield extends JPanel implements MouseListener {
 		return false;
 	}
 
-	private boolean containEpath(int x, int y) {
+	/**
+	 * check if a enemy cell contains the coordinates
+	 * 
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	private boolean containEnemyCell(int x, int y) {
 		for (Rectangle c : l_e_unit_path) {
 			if (c.contains(x, y)) {
 				return true;
@@ -213,6 +282,12 @@ public class Gamefield extends JPanel implements MouseListener {
 		return false;
 	}
 
+	/**
+	 * checks ownership
+	 * 
+	 * @param id
+	 * @return
+	 */
 	private boolean checkOwnership(int id) {
 
 		for (CellUnit u : units) {
@@ -231,7 +306,6 @@ public class Gamefield extends JPanel implements MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 
-
 	}
 
 	@Override
@@ -240,24 +314,28 @@ public class Gamefield extends JPanel implements MouseListener {
 
 	}
 
-	
 	/**
 	 * TEST ZWECKE
-	 * @param canvas
+	 * 
 	 */
 	CanvasGraphic2D canvas;
-	
-	public void setCanvas(CanvasGraphic2D canvas){
+
+	/**
+	 * Test ZWECKE
+	 * 
+	 * @param canvas
+	 */
+	public void setCanvas(CanvasGraphic2D canvas) {
 		this.canvas = canvas;
 	}
-	
+
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		System.out.println("Mouse: released on Gamefield");
-		
+		boolean attack = false;
 
 		if (l_unit != -1 && l_unit_path.size() != 0) {
-			if (containpath(e.getX(), e.getY())) {
+			if (containCellPath(e.getX(), e.getY())) {
 
 				int x = e.getX() / tile_size;
 				int y = e.getY() / tile_size;
@@ -266,12 +344,15 @@ public class Gamefield extends JPanel implements MouseListener {
 
 					Command c = new Command(Command.MOVE, l_unit, x, y);
 					System.out.println(c.toString());
-					logic.executeCommand(c);
 
-					/** test umgebung **/
-					this.canvas.refresh();
-					
-					
+					if (client == null) {
+						/** test umgebung **/
+						logic.executeCommand(c);
+						this.canvas.refresh();
+					} else {
+						client.sendCommand(c);
+					}
+
 				} else {
 					System.out.println("not your unit!");
 					repaint();
@@ -279,31 +360,35 @@ public class Gamefield extends JPanel implements MouseListener {
 
 			}
 
-			if (containEpath(e.getX(), e.getY())) {
+			if (containEnemyCell(e.getX(), e.getY())) {
 
 				int x = e.getX() / tile_size;
 				int y = e.getY() / tile_size;
 
 				if (checkOwnership(l_unit)) {
 
+					attack = true;
+
 					Command c = new Command(Command.ATTACK, l_unit, x, y);
 					System.out.println(c.toString());
-					logic.executeCommand(c);
 
-					/** test umgebung **/
-					this.canvas.refresh();
-					
-					
+					if (client == null) {
+						/** test umgebung **/
+						logic.executeCommand(c);
+						this.canvas.refresh();
+					} else {
+						client.sendCommand(c);
+					}
+
 				} else {
 					System.out.println("not your unit!");
 					repaint();
 				}
 			}
 
-			l_unit = -1;
+		}
 
-		} else {
-
+		if (!attack) {
 			l_unit = -1;
 
 			System.out.println("Mouse: click on Gamefield: " + e.getX() + "x" + e.getY());
@@ -313,7 +398,7 @@ public class Gamefield extends JPanel implements MouseListener {
 			if (id != -1) {
 
 				l_unit = id;
-				this.computePossiblePath(this.getCellUnit(l_unit));
+				this.computePossibleCellActions(this.getCellUnit(l_unit));
 
 			}
 
