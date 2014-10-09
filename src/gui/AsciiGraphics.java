@@ -86,13 +86,10 @@ public class AsciiGraphics {
 	public void start() {
 
 		boolean run = true;
-		boolean connected = false;
+//		boolean connected = false;
 
 		while (run) {
 
-			this.showUnitList();
-
-			this.showGamefield();
 
 			// reads command
 			BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
@@ -110,9 +107,11 @@ public class AsciiGraphics {
 			System.out.println(line);
 
 			// interpret command
-			if (connected && (command.equals(Command.ATTACK) || command.equals(Command.MOVE)) && (line.split(" ", 5).length == 5 || line.split(" ", 5).length == 4)) {
-				System.out.println(command + "!!!!!!!!");
-
+//			if (connected && (command.equals(Command.ATTACK) || command.equals(Command.MOVE)) && (line.split(" ", 5).length == 5 || line.split(" ", 5).length == 4)) {
+//				System.out.println(command + "!!!!!!!!");
+				if ((command.equals(Command.ATTACK) || command.equals(Command.MOVE)) && (line.split(" ", 5).length == 5 || line.split(" ", 5).length == 4)) {
+					System.out.println(command + "!!!!!!!!");
+				
 				int x;
 				int y;
 				int targetX;
@@ -145,17 +144,21 @@ public class AsciiGraphics {
 				String name = line.split(" ", 3)[2];
 				System.out.print("connect to " + ip + " as " + name);
 				client.connect(ip, name);
-				connected = true;
+//				connected = true;
 			} else if (command.equals(EXIT)) {
 				System.out.print("BYE BYE");
 				run = false;
 			} else {
 				System.out.println("ERROR");
-				if(!connected){
-					System.out.println("\n First connect to server \n");
-				}
+//				if(!connected){
+//					System.out.println("\n First connect to server \n");
+//				}
 				this.printHelp();
 			}
+			
+			this.showUnitList();
+
+			this.showGamefield();
 		}
 
 	}
