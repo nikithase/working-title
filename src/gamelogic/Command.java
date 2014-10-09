@@ -10,6 +10,8 @@ public class Command implements Serializable {
 
     public static final String ATTACK = "attack";
     public static final String MOVE = "move";
+    
+    private static final long serialVersionUID = 1L;
 
     /**
      * create a new command
