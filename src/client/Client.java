@@ -4,6 +4,7 @@ import gamelogic.Command;
 import gamelogic.Gamelogic;
 import gui.AsciiGraphics;
 import network.ClientNetwork;
+import sound.Sound;
 
 /**
  *
@@ -60,6 +61,7 @@ public class Client implements Runnable {
     public boolean connect(String host, String name) {
         boolean success = network.tryConnect(host, 12345, name);
         if (success) {
+            Sound.playSound("wolfe.wav");
             mainloop.start();
         }
         return success;
