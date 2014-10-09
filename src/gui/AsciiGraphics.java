@@ -112,10 +112,10 @@ public class AsciiGraphics {
 				if ((command.equals(Command.ATTACK) || command.equals(Command.MOVE)) && (line.split(" ", 5).length == 5 || line.split(" ", 5).length == 4)) {
 					System.out.println(command + "!!!!!!!!");
 				
-				int x;
-				int y;
-				int targetX;
-				int targetY;
+				int x = 0;
+				int y = 0;
+				int targetX = 0;
+				int targetY = 0;
 				int unitId = -1;
 
 				if (line.split(" ", 5).length == 5) {
@@ -133,6 +133,9 @@ public class AsciiGraphics {
 				if (unitId != -1) {
 					Command c = new Command(command, unitId, targetX, targetY);
 //					logic.executeCommand(c);
+					
+					System.out.println("Iterpreted Command: " + c.toString());
+					
 					client.sendCommand(c);
 				} else {
 					System.out.println("ERROR: Unit not found");
