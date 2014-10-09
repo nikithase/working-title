@@ -2,7 +2,7 @@ package gui.canvas.graphic2d;
 
 import gamelogic.Command;
 import gamelogic.Gamelogic;
-import gamelogic.Unit;
+import gamelogic.gameobjects.Unit;
 import gui.CanvasGraphic2D;
 
 import java.awt.Color;

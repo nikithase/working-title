@@ -1,86 +1,100 @@
 package gamelogic;
 
+import gamelogic.gameobjects.Unit;
+import gamelogic.gameobjects.testunits.Bauer;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 /**
- *
+ * 
  * @author Michael
  */
 public class Gamelogic {
 
-    private ArrayList<Unit> unitsOnField;
+	/**
+	 * Current id to use for next unit to spawn.
+	 */
+	private static int ID = 100;
 
-    public Gamelogic() {
-        unitsOnField = new ArrayList<Unit>();
-    }
+	private ArrayList<Unit> unitsOnField;
 
-    /**
-     * Load a testing gamestate.
-     */
-    public void initTestState() {
+	public Gamelogic() {
+		unitsOnField = new ArrayList<Unit>();
+	}
 
-        for (int i = 0; i < 10; i++) {
+	/**
+	 * Load a testing gamestate.
+	 */
+	public void initTestState() {
 
-            int id = i;
-            int hp = 100;
-            int posX = (i < 5) ? i : 9 - i;
-            int posY = (i < 5) ? 1 : 9;
-            int movespeed = 1;
-            int damage = 10;
-            String owner = (i < 5) ? "Peter" : "Klaus";
+		for (int i = 0; i < 10; i++) {
 
-            unitsOnField.add(new Unit(id, hp, posX, posY, movespeed, damage, owner));
-        }
-    }
+			int posX = (i < 5) ? i : 9 - i;
+			int posY = (i < 5) ? 1 : 9;
+			String owner = (i < 5) ? "Peter" : "Klaus";
 
-    /**
-     *
-     * Returns a List of actual existing units
-     *
-     * @return List of units
-     */
-    public List<Unit> getUnits() {
-        return unitsOnField;
-    }
+			spawnUnit(Bauer.NAME, posX, posY, owner);
+		}
+	}
 
-    /**
-     * Executs a Command
-     *
-     * @param command
-     */
-    public void executeCommand(Command command) {
+	/**
+	 * 
+	 * Returns a List of actual existing units
+	 * 
+	 * @return List of units
+	 */
+	public List<Unit> getUnits() {
+		return unitsOnField;
+	}
 
-        for (Iterator<Unit> iter = unitsOnField.iterator(); iter.hasNext();) {
-            Unit currentUnit = iter.next();
+	/**
+	 * Executs a Command
+	 * 
+	 * @param command
+	 */
+	public void executeCommand(Command command) {
 
-            if (currentUnit.id == command.unitId) {
+		for (Iterator<Unit> iter = unitsOnField.iterator(); iter.hasNext();) {
+			Unit currentUnit = iter.next();
 
-                switch (command.command) {
-                    case "move":
-                        currentUnit.posX = command.targetX;
-                        currentUnit.posY = command.targetY;
-                        break;
-                    case "attack":
-                        for (Iterator<Unit> iter2 = unitsOnField.iterator(); iter2
-                                .hasNext();) {
-                            Unit unitToAttack = iter2.next();
-                            if (unitToAttack.posX == command.targetX
-                                    && unitToAttack.posY == command.targetY) {
-                                unitToAttack.hitpoints -= currentUnit.damage;
-                                if (unitToAttack.hitpoints <= 0) {
-                                    iter2.remove();
-                                }
-                            }
-                        }
-                        break;
-                    default:
-                    ;
-                }
+			if (currentUnit.id == command.unitId) {
 
-                return;
-            }
-        }
-    }
+				switch (command.command) {
+				case Command.MOVE:
+					currentUnit.move(command.targetX, command.targetY);
+					break;
+				case Command.ATTACK:
+					for (Iterator<Unit> iter2 = unitsOnField.iterator(); iter2.hasNext();) {
+						Unit unitToAttack = iter2.next();
+						if (unitToAttack.posX == command.targetX && unitToAttack.posY == command.targetY) {
+							currentUnit.attack(unitToAttack);
+							if (unitToAttack.hitpoints <= 0) {
+								iter2.remove();
+							}
+						}
+					}
+					break;
+				default:
+					;
+				}
+
+				return;
+			}
+		}
+	}
+
+	public void spawnUnit(String nameOfUnit, int posX, int posY, String owner) {
+		Unit newUnit;
+		switch (nameOfUnit) {
+		case Bauer.NAME:
+			newUnit = new Bauer(Gamelogic.ID++, posX, posY, owner);
+			break;
+		default:
+			// TODO doesnt add any unit to the field
+			return;
+		}
+		unitsOnField.add(newUnit);
+	}
 }

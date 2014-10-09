@@ -2,11 +2,9 @@ package client;
 
 import gamelogic.Command;
 import gamelogic.Gamelogic;
-import gui.AsciiGraphics;
 import gui.CanvasGraphic2D;
 import gui.iGraphic;
 import network.ClientNetwork;
-import sound.Sound;
 
 /**
  *

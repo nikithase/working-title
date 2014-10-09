@@ -3,7 +3,8 @@ package gui;
 import client.Client;
 import gamelogic.Command;
 import gamelogic.Gamelogic;
-import gamelogic.Unit;
+import gamelogic.gameobjects.Unit;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -175,7 +176,8 @@ public class AsciiGraphics implements iGraphic{
      * renders the game new
      * 
      */
-    public void refresh(){
+    @Override
+	public void refresh(){
 
         this.showUnitList();
         this.showGamefield();

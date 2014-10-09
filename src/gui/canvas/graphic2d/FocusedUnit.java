@@ -1,6 +1,6 @@
 package gui.canvas.graphic2d;
 
-import gamelogic.Unit;
+import gamelogic.gameobjects.Unit;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
