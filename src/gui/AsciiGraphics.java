@@ -13,7 +13,8 @@ import client.Client;
 /**
  * Textbased GUI for testing.
  *
- * @author Michael
+ * @author Ludwig Biermann
+ * @version 1.1
  */
 public class AsciiGraphics {
 
@@ -42,16 +43,18 @@ public class AsciiGraphics {
 	/**
 	 * player2
 	 */
+	@SuppressWarnings("unused")
 	private String player2;
 
 	/**
-	 * Does something.
-	 *
-	 * @param logic
-	 * @param sizeX
-	 * @param sizeY
-	 * @param player1
-	 * @param player2
+	 * Construct a new Console Graphic Engine
+	 * 
+	 * @param client the core system
+	 * @param logic the logic system
+	 * @param sizeX the height of the field
+	 * @param sizeY the width of the field
+	 * @param player1 the Player 1
+	 * @param player2 the Player 2
 	 */
 	public AsciiGraphics(Client client, Gamelogic logic, int sizeX, int sizeY, String player1, String player2) {
 		System.out.println("working tilte V0.0");
@@ -83,6 +86,7 @@ public class AsciiGraphics {
 	public void start() {
 
 		boolean run = true;
+		boolean connected = false;
 
 		while (run) {
 
@@ -106,7 +110,7 @@ public class AsciiGraphics {
 			System.out.println(line);
 
 			// interpret command
-			if ((command.equals(Command.ATTACK) || command.equals(Command.MOVE)) && (line.split(" ", 5).length == 5 || line.split(" ", 5).length == 4)) {
+			if (connected && (command.equals(Command.ATTACK) || command.equals(Command.MOVE)) && (line.split(" ", 5).length == 5 || line.split(" ", 5).length == 4)) {
 				System.out.println(command + "!!!!!!!!");
 
 				int x;
@@ -129,7 +133,7 @@ public class AsciiGraphics {
 
 				if (unitId != -1) {
 					Command c = new Command(command, unitId, targetX, targetY);
-					// logic.executeCommand(c);
+//					logic.executeCommand(c);
 					client.sendCommand(c);
 				} else {
 					System.out.println("ERROR: Unit not found");
@@ -141,11 +145,15 @@ public class AsciiGraphics {
 				String name = line.split(" ", 3)[2];
 				System.out.print("connect to " + ip + " as " + name);
 				client.connect(ip, name);
+				connected = true;
 			} else if (command.equals(EXIT)) {
 				System.out.print("BYE BYE");
 				run = false;
 			} else {
 				System.out.println("ERROR");
+				if(!connected){
+					System.out.println("\n First connect to server \n");
+				}
 				this.printHelp();
 			}
 		}

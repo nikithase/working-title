@@ -29,7 +29,7 @@ public class Gamelogic {
             int posY = (i < 5) ? 1 : 9;
             int movespeed = 1;
             int damage = 10;
-            String owner = (i < 5) ? "wayne train" : "mt. whateverest";
+            String owner = (i < 5) ? "Peter" : "Klaus";
 
             unitsOnField.add(new Unit(id, hp, posX, posY, movespeed, damage, owner));
         }
