@@ -77,7 +77,7 @@ public class AsciiGraphics implements iGraphic {
 
     @Override
     public void nextTurn() {
-        this.initialize();
+        this.initialize("");
     }
 
     private String readLine() {
@@ -95,7 +95,7 @@ public class AsciiGraphics implements iGraphic {
     }
 
     @Override
-    public void initialize() {
+    public void initialize(String position) {
 
         boolean run = true;
 //		boolean connected = false;
@@ -293,4 +293,6 @@ public class AsciiGraphics implements iGraphic {
     public void changeGamelogic(Gamelogic newGameLogic) {
         this.logic = newGameLogic;
     }
+
+  
 }

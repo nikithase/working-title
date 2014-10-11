@@ -4,6 +4,7 @@ import gamelogic.Command;
 import gamelogic.Gamelogic;
 import gui.CanvasGraphic2D;
 import gui.iGraphic;
+import java.util.Arrays;
 import network.ClientNetwork;
 import network.ClientNetworkMessageHandler;
 
@@ -32,11 +33,15 @@ public class Client implements Runnable, ClientNetworkMessageHandler {
     private Gamelogic gamelogic;
     private iGraphic graphic;
     private Thread mainloop;
+    private String name;
 
     /**
      *
      */
-    public Client() {
+    public Client(String name, String position) {
+        if (name != null) {
+            this.name = name;
+        }
         network = new ClientNetwork(this);
         gamelogic = new Gamelogic();
         gamelogic.initClientWaitingForOtherPlayersState();
@@ -45,13 +50,13 @@ public class Client implements Runnable, ClientNetworkMessageHandler {
 
         //starts a Console Based Grafik
         //graphic = new AsciiGraphics(this, gamelogic, size, size, PLAYER1, PLAYER2);
-        graphic = new CanvasGraphic2D(gamelogic, size, size, PLAYER1, this);
+        graphic = new CanvasGraphic2D(gamelogic, size, size, name, this);
 
         Thread graphicsThread = new Thread(new Runnable() {
 
             @Override
             public void run() {
-                graphic.initialize();
+                graphic.initialize(position);
             }
         });
         graphicsThread.setName("graphicsThread");
@@ -90,8 +95,21 @@ public class Client implements Runnable, ClientNetworkMessageHandler {
      * @param args
      * @throws Exception
      */
-    public static void main(String[] args) throws Exception {
-        new Client();
+    public static void main(String[] args) {
+        String name = "unknownPlayer";
+        if (Arrays.asList(args).contains("--Klaus")) {
+            name = "Klaus";
+        } else if (Arrays.asList(args).contains("--Peter")) {
+            name = "Peter";
+        }
+        
+        String position = null;
+        if (Arrays.asList(args).contains("--left")) {
+            position = "--left";
+        } else if (Arrays.asList(args).contains("--right")) {
+            position = "--right";
+        }
+        new Client(name, position);
 
     }
 

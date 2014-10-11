@@ -64,6 +64,8 @@ public class CanvasGraphic2D extends JPanel implements iGraphic, ActionListener 
     private JTextField ip_e;
     private JTextField player_e;
 
+    private String position;
+
     private boolean run;
 
     /**
@@ -122,10 +124,20 @@ public class CanvasGraphic2D extends JPanel implements iGraphic, ActionListener 
     }
 
     @Override
-    public void initialize() {
+    public void initialize(String position) {
 
-		// ask ip and name
+        this.position = position;
+        // ask ip and name
         login = new JFrame("Login@RofL@" + VERSION);
+
+        if (position != null) {
+            if (position.equals("--left")) {
+                login.setLocation(100, 100);
+            } else if (position.equals("--right")) {
+                login.setLocation(1000, 100);
+            }
+        }
+
         login.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         login.setLayout(new GridLayout(0, 2));
@@ -133,7 +145,7 @@ public class CanvasGraphic2D extends JPanel implements iGraphic, ActionListener 
         JTextField player_t = new JTextField("Player Name: ");
         player_t.setEditable(false);
 
-        player_e = new JTextField("Klaus");
+        player_e = new JTextField(player);
         player_e.setEditable(true);
 
         JTextField ip_t = new JTextField("IP Adresse: ");
@@ -169,8 +181,15 @@ public class CanvasGraphic2D extends JPanel implements iGraphic, ActionListener 
         // load Texture
         new TextureLib();
 
-		// create Window
+        // create Window
         JFrame f = new JFrame("RofL@" + VERSION);
+        if (position != null) {
+            if (position.equals("--left")) {
+                f.setLocation(100, 100);
+            } else if (position.equals("--right")) {
+                f.setLocation(1000, 100);
+            }
+        }
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // create Components

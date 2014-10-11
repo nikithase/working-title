@@ -14,7 +14,7 @@ public interface iGraphic {
 	/**
 	 * initialize the GUI
 	 */
-	public void initialize();
+	public void initialize(String position);
 	
 	/**
 	 * informs the GUI to perform the next Turn
