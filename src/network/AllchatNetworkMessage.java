@@ -8,7 +8,7 @@ import java.io.ObjectOutputStream;
  *
  * @author Michael
  */
-public class AllchatNetworkMessage extends NetworkMessage {
+class AllchatNetworkMessage extends NetworkMessage {
 
     private String sender;
     private String message;
