@@ -5,12 +5,13 @@ import gamelogic.Gamelogic;
 import gui.CanvasGraphic2D;
 import gui.iGraphic;
 import network.ClientNetwork;
+import network.ClientNetworkMessageHandler;
 
 /**
  *
  * @author Michael
  */
-public class Client implements Runnable {
+public class Client implements Runnable, ClientNetworkMessageHandler {
 
     /**
      * Name of client 1
@@ -33,20 +34,19 @@ public class Client implements Runnable {
     private Thread mainloop;
 
     /**
-     * 
+     *
      */
     public Client() {
-        network = new ClientNetwork();
+        network = new ClientNetwork(this);
         gamelogic = new Gamelogic();
-        gamelogic.initTestState();
+        gamelogic.initClientWaitingForOtherPlayersState();
         mainloop = new Thread(this);
         mainloop.setName("Clientmainloop");
 
         //starts a Console Based Grafik
         //graphic = new AsciiGraphics(this, gamelogic, size, size, PLAYER1, PLAYER2);
-        
         graphic = new CanvasGraphic2D(gamelogic, size, size, PLAYER1, this);
-        
+
         Thread graphicsThread = new Thread(new Runnable() {
 
             @Override
@@ -98,11 +98,35 @@ public class Client implements Runnable {
     @Override
     public void run() {
         while (true) {
-            Command command = network.receiveCommand();
-            gamelogic.executeCommand(command);
+            network.receiveMessage();
             graphic.refresh();
             graphic.nextTurn();
         }
+    }
+
+    @Override
+    public void startGame(Gamelogic gamelogic) {
+        this.gamelogic = gamelogic;
+        graphic.changeGamelogic(gamelogic);
+        graphic.refresh();
+        graphic.nextTurn();
+    }
+
+    @Override
+    public void receiveChatMessage(String sender, String text) {
+        System.out.println(sender + ": " + text);
+    }
+
+    @Override
+    public void setActivePlayer(String activePlayer) {
+
+    }
+
+    @Override
+    public void executePlayerCommand(Command command) {
+        gamelogic.executeCommand(command);
+        graphic.refresh();
+        graphic.nextTurn();
     }
 
 }

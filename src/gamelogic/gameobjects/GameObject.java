@@ -1,5 +1,7 @@
 package gamelogic.gameobjects;
 
+import java.io.Serializable;
+
 /**
  * Represents a gameobject on the gamefield.
  * 
@@ -7,6 +9,6 @@ package gamelogic.gameobjects;
  * 
  */
 
-public interface GameObject {
+public interface GameObject extends Serializable {
 
 }

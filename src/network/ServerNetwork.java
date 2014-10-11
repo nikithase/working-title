@@ -1,6 +1,7 @@
 package network;
 
 import gamelogic.Command;
+import gamelogic.Gamelogic;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -17,15 +18,19 @@ import server.ClientConnection;
  */
 public class ServerNetwork implements Runnable {
 
+    private final ServerNetworkMessageHandler messageHandler;
     private Thread clientAcceptorThread;
-    private ArrayList<Command> receivedMessages;
+    private ArrayList<NetworkMessage> receivedMessages;
     ServerSocket serverSocket;
     private ArrayList<ClientConnection> clients;
 
     /**
      * Initializes the server and starts accepting clients.
+     *
+     * @param messageHandler the MessageHandler to handle all received messages from clients
      */
-    public ServerNetwork() {
+    public ServerNetwork(ServerNetworkMessageHandler messageHandler) {
+        this.messageHandler = messageHandler;
         try {
             receivedMessages = new ArrayList<>();
             clients = new ArrayList<>();
@@ -44,27 +49,37 @@ public class ServerNetwork implements Runnable {
      *
      * @param command
      */
-    public void sendMessageToAll(Command command) {
+    public void broadcastPlayerCommand(Command command) {
+        PlayerCommandMessage message = new PlayerCommandMessage(command);
         clients.stream().forEach((client) -> {
             try {
-                client.output.writeObject(command);
-                client.output.flush();
+                message.writeToStream(client.output);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
         });
     }
 
-    /**
-     * Return all received messages. The list can be empty if no messages are received yet.
-     *
-     * @return a list of all received messages
-     */
-    public List<Command> getMessages() {
-        ArrayList<Command> messages = new ArrayList<>();
-        messages.addAll(receivedMessages);
-        receivedMessages.clear();
-        return messages;
+    public void broadcastChatMessage(String player, String text) {
+        AllchatNetworkMessage message = new AllchatNetworkMessage(player, text);
+        clients.stream().forEach((client) -> {
+            try {
+                message.writeToStream(client.output);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        });
+    }
+
+    public void broadcastStartGame(Gamelogic gamelogic) {
+        StartGameMessage message = new StartGameMessage(gamelogic);
+        clients.stream().forEach((client) -> {
+            try {
+                message.writeToStream(client.output);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        });
     }
 
     /**
@@ -73,7 +88,11 @@ public class ServerNetwork implements Runnable {
      * @return a list of the connected clients
      */
     public List<String> getConnectedClients() {
-        throw new UnsupportedOperationException("not implemented yet.");
+        ArrayList<String> names = new ArrayList<>();
+        clients.stream().forEach((client) -> {
+            names.add(client.name);
+        });
+        return names;
     }
 
     @Override
@@ -92,8 +111,8 @@ public class ServerNetwork implements Runnable {
                 Thread messageReceiveThread = new Thread(() -> {
                     try {
                         while (true) {
-                            Command command = (Command) connection.input.readObject();
-                            receivedMessages.add(command);
+                            NetworkMessage message = NetworkMessage.readNetworkMessage(connection.name, connection.input);
+                            receivedMessages.add(message);
                         }
                     } catch (SocketException ex) {
                         System.out.println("[SERV]: " + connection.name + " disconnected (eof)");
@@ -110,6 +129,16 @@ public class ServerNetwork implements Runnable {
             }
 
         }
+    }
+
+    /**
+     * Call the ServerNetworkMessageHandler for every message received since the last call to this method.
+     */
+    public void handleMessages() {
+        for (NetworkMessage message : receivedMessages) {
+            message.handleOnServer(messageHandler);
+        }
+        receivedMessages.clear();
     }
 
 }

@@ -16,7 +16,7 @@ import sound.Sound;
  * @author Ludwig Biermann
  * @version 1.1
  */
-public class AsciiGraphics implements iGraphic{
+public class AsciiGraphics implements iGraphic {
 
     private static final String EXIT = "exit";
     private static final String CONNECT = "connect";
@@ -74,14 +74,14 @@ public class AsciiGraphics implements iGraphic{
     public void showText(String text) {
         System.out.println(text);
     }
-    
+
     @Override
-    public void nextTurn(){
-    	this.initialize();
+    public void nextTurn() {
+        this.initialize();
     }
-    
-    private String readLine(){
-    	 // reads command
+
+    private String readLine() {
+        // reads command
         BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("\n");
         System.out.print("Command: ");
@@ -91,7 +91,7 @@ public class AsciiGraphics implements iGraphic{
         } catch (IOException e) {
             e.printStackTrace();
         }
-    	return line;
+        return line;
     }
 
     @Override
@@ -102,7 +102,7 @@ public class AsciiGraphics implements iGraphic{
 
         while (run) {
 
-            String line  = readLine();
+            String line = readLine();
 
             String command = line.split(" ", 2)[0];
 
@@ -139,9 +139,9 @@ public class AsciiGraphics implements iGraphic{
                     System.out.println("Iterpreted Command: " + c.toString());
 
                     client.sendCommand(c);
-                    
+
                     run = false;
-                    
+
                 } else {
                     System.out.println("ERROR: Unit not found");
                     this.printHelp();
@@ -169,15 +169,14 @@ public class AsciiGraphics implements iGraphic{
             }
         }
     }
-    
-    
+
     /**
-     * 
+     *
      * renders the game new
-     * 
+     *
      */
     @Override
-	public void refresh(){
+    public void refresh() {
 
         this.showUnitList();
         this.showGamefield();
@@ -279,15 +278,19 @@ public class AsciiGraphics implements iGraphic{
     }
 
     @Override
-    public String getVersion(){
-    	return VERSION;
+    public String getVersion() {
+        return VERSION;
     }
-    
-    
+
     /**
      * prints the current Graphic Version
      */
     private void printGraphicVersion() {
         System.out.print(VERSION);
+    }
+
+    @Override
+    public void changeGamelogic(Gamelogic newGameLogic) {
+        this.logic = newGameLogic;
     }
 }

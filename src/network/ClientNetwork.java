@@ -8,6 +8,7 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 
 /**
+ * Manages communication with the server.
  *
  * @author Michael
  */
@@ -16,13 +17,24 @@ public class ClientNetwork {
     private final Socket socket;
     private ObjectInputStream input;
     private ObjectOutputStream output;
+    private final ClientNetworkMessageHandler messageHandler;
+    /**
+     * The name used to connect to the server.
+     */
+    private String clientName;
 
-    public ClientNetwork() {
+    /**
+     * Initialize the Clientnetwork.
+     *
+     * @param messageHandler
+     */
+    public ClientNetwork(ClientNetworkMessageHandler messageHandler) {
         socket = new Socket();
+        this.messageHandler = messageHandler;
     }
 
     /**
-     * Trys to connect to the host
+     * Tries to connect to the host
      *
      * @param host name of the host
      * @param port TCP Port
@@ -36,22 +48,39 @@ public class ClientNetwork {
             input = new ObjectInputStream(socket.getInputStream());
             output.writeUTF(name);
             output.flush();
+            clientName = name;
             return true;
         } catch (IOException ex) {
-            ex.printStackTrace();
+            System.out.println("Failed to connect to host \"" + host + "\".");
             return false;
         }
     }
 
     /**
-     * send a command to the host.
-     *
-     * @param command the command
+     * Receive one message from the server and calls the ClientNetworkMEssageHandler to handle it. Blocks until a complete message is received.
      */
-    public void sendCommand(Command command) {
+    public void receiveMessage() {
+
         try {
-           output.writeObject(command);
-           output.flush();
+            NetworkMessage message = NetworkMessage.readNetworkMessage("server", input);
+            message.handleOnClient(messageHandler);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    /**
+     * Send a chat message to all players.
+     *
+     * @param message
+     */
+    public void sendChatMessage(String message) {
+        try {
+            output.writeByte(NetworkMessage.CHAT);
+            output.writeUTF(clientName);
+            output.writeUTF(message);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -59,18 +88,17 @@ public class ClientNetwork {
     }
 
     /**
-     * Wait until a message is received.
+     * Send a command (such as move or attack) to the server.
      *
-     * @return receive an array of bytes from the host
-     *
-     * @return the command
+     * @param command
      */
-    public Command receiveCommand() {
+    public void sendCommand(Command command) {
         try {
-            return (Command) input.readObject();
-        } catch (IOException | ClassNotFoundException ex) {
+            output.writeByte(NetworkMessage.PLAYERCOMMAND);
+            output.writeObject(command);
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
-        return null;
     }
+
 }

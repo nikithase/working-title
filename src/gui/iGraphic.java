@@ -1,5 +1,7 @@
 package gui;
 
+import gamelogic.Gamelogic;
+
 /**
  * 
  * Defines the GUI
@@ -36,4 +38,6 @@ public interface iGraphic {
 	 * @return current Version
 	 */
 	public String getVersion();
+        
+        public void changeGamelogic(Gamelogic newGameLogic);
 }
