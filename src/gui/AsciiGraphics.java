@@ -294,5 +294,10 @@ public class AsciiGraphics implements iGraphic {
         this.logic = newGameLogic;
     }
 
+    @Override
+    public void autoconnect() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
   
 }

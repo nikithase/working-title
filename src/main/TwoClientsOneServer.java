@@ -27,13 +27,13 @@ public class TwoClientsOneServer {
         }
 
         clientThread1 = new Thread(() -> {
-            Client.main(new String[]{"--left", "--Klaus"});
+            Client.main(new String[]{"--left", "--Klaus", "--autoconnect"});
         });
         clientThread1.setName("clientThread1");
         clientThread1.start();
 
         clientThread2 = new Thread(() -> {
-            Client.main(new String[]{"--right", "--Peter"});
+            Client.main(new String[]{"--right", "--Peter", "--autoconnect"});
         });
         clientThread2.setName("clientThread2");
         clientThread2.start();

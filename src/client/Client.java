@@ -38,7 +38,7 @@ public class Client implements Runnable, ClientNetworkMessageHandler {
     /**
      *
      */
-    public Client(String name, String position) {
+    public Client(String name, String position, boolean autoconnect) {
         if (name != null) {
             this.name = name;
         }
@@ -48,19 +48,12 @@ public class Client implements Runnable, ClientNetworkMessageHandler {
         mainloop = new Thread(this);
         mainloop.setName("Clientmainloop");
 
-        //starts a Console Based Grafik
-        //graphic = new AsciiGraphics(this, gamelogic, size, size, PLAYER1, PLAYER2);
         graphic = new CanvasGraphic2D(gamelogic, size, size, name, this);
 
-        Thread graphicsThread = new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                graphic.initialize(position);
-            }
-        });
-        graphicsThread.setName("graphicsThread");
-        graphicsThread.start();
+        graphic.initialize(position);
+        if (autoconnect) {
+            graphic.autoconnect();
+        }
     }
 
     /**
@@ -102,14 +95,17 @@ public class Client implements Runnable, ClientNetworkMessageHandler {
         } else if (Arrays.asList(args).contains("--Peter")) {
             name = "Peter";
         }
-        
+
         String position = null;
         if (Arrays.asList(args).contains("--left")) {
             position = "--left";
         } else if (Arrays.asList(args).contains("--right")) {
             position = "--right";
         }
-        new Client(name, position);
+
+        boolean autoconnect = Arrays.asList(args).contains("--autoconnect");
+
+        new Client(name, position, autoconnect);
 
     }
 

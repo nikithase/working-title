@@ -263,4 +263,9 @@ public class CanvasGraphic2D extends JPanel implements iGraphic, ActionListener 
         this.logic = newGameLogic;
     }
 
+    @Override
+    public void autoconnect() {
+        actionPerformed(null);
+    }
+
 }

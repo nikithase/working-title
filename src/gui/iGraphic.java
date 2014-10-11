@@ -40,4 +40,6 @@ public interface iGraphic {
 	public String getVersion();
         
         public void changeGamelogic(Gamelogic newGameLogic);
+
+    public void autoconnect();
 }
