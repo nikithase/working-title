@@ -1,7 +1,7 @@
 package gamelogic;
 
 import gamelogic.gameobjects.Unit;
-import gamelogic.gameobjects.testunits.Bauer;
+import gamelogic.gameobjects.units.Bauer;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;

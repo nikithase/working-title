@@ -1,4 +1,6 @@
-package gamelogic.gameobjects;
+package gamelogic.gameobjects.units;
+
+import gamelogic.gameobjects.Unit;
 
 public class Lord extends Unit {
 

@@ -1,6 +1,4 @@
-package gamelogic.gameobjects.testunits;
-
-import gamelogic.gameobjects.Minion;
+package gamelogic.gameobjects.units;
 
 public class Bauer extends Minion {
 
