@@ -1,6 +1,7 @@
 package gamelogic;
 
 import gamelogic.gameobjects.Unit;
+import gamelogic.gameobjects.units.BaguetteBruiser;
 import gamelogic.gameobjects.units.Bauer;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -37,6 +38,8 @@ public class Gamelogic implements Serializable {
 
             spawnUnit(Bauer.NAME, posX, posY, owner);
         }
+        spawnUnit(BaguetteBruiser.NAME, 5,1, "Peter");
+        spawnUnit(BaguetteBruiser.NAME, 5,9, "Klaus");
     }
 
     public void initClientWaitingForOtherPlayersState() {
@@ -113,9 +116,11 @@ public class Gamelogic implements Serializable {
             case Bauer.NAME:
                 newUnit = new Bauer(Gamelogic.ID++, posX, posY, owner);
                 break;
+            case BaguetteBruiser.NAME:
+                newUnit = new BaguetteBruiser(Gamelogic.ID++, posX, posY, owner);
+                break;
             default:
-                // TODO doesnt add any unit to the field
-                return;
+                throw new RuntimeException("Someone tried to create a \"" + nameOfUnit + "\" unit. Blasphemy!");
         }
         unitsOnField.add(newUnit);
     }

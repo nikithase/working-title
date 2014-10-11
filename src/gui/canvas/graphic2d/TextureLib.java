@@ -24,6 +24,15 @@ public class TextureLib {
 	 * white Texture for "Schwarzer Bauer"
 	 */
 	public static BufferedImage sBauer = null;
+        /**
+         * the baguette bruiser
+         */
+	public static BufferedImage baguette_bruiser = null;
+        
+         /**
+         * enemy baguette bruiser
+         */
+	public static BufferedImage enemy_baguette_bruiser = null;
 
 	/**
 	 * create and initialize a new Texture Library
@@ -32,6 +41,8 @@ public class TextureLib {
 		try {
 			wBauer = ImageIO.read(new File("img/canvas2d/wbauer.png"));
 			sBauer = ImageIO.read(new File("img/canvas2d/sbauer.png"));
+			baguette_bruiser = ImageIO.read(new File("img/canvas2d/baguette_bruiser.png"));
+			enemy_baguette_bruiser = ImageIO.read(new File("img/canvas2d/enemy_baguette_bruiser.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

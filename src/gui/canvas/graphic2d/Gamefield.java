@@ -107,13 +107,22 @@ public class Gamefield extends JPanel implements MouseListener {
 		}
 
 		for (CellUnit u : units) {
-			if (player.equals(u.owner)) {
+                    if(u.texture != null && u.texture.equals("baguette_bruiser")){
+                        if (player.equals(u.owner)) {
+				g.drawImage(TextureLib.baguette_bruiser, u.r.x -15, u.r.y-35,70,70, this);
+			} else {
+				g.drawImage(TextureLib.enemy_baguette_bruiser, u.r.x-15, u.r.y-35,70,70, this);
+			}
+                    }else{
+                        if (player.equals(u.owner)) {
 				g.setColor(Color.black);
 				g.drawImage(TextureLib.wBauer, u.r.x, u.r.y, this);
 			} else {
 				g.setColor(Color.white);
 				g.drawImage(TextureLib.sBauer, u.r.x, u.r.y, this);
 			}
+                    }
+			
 
 			/**
 			 * Draw Nummber
@@ -224,7 +233,7 @@ public class Gamefield extends JPanel implements MouseListener {
 		LinkedList<CellUnit> tmp = new LinkedList<CellUnit>();
 
 		for (Unit u : units) {
-			tmp.add(new CellUnit(new Rectangle(u.posX * tile_size, u.posY * tile_size, tile_size, tile_size), u));
+			tmp.add(new CellUnit(new Rectangle(u.posX * tile_size, u.posY * tile_size, tile_size, tile_size), u, u.texture));
 		}
 
 		return tmp;
@@ -425,9 +434,10 @@ public class Gamefield extends JPanel implements MouseListener {
 
 		public Rectangle r;
 
-		public CellUnit(Rectangle r, Unit u) {
+		public CellUnit(Rectangle r, Unit u, String texture) {
 			super(u.id, u.hitpoints, u.posX, u.posY, u.movespeed, u.damage, u.owner);
 			this.r = r;
+                        this.texture = texture;
 		}
 
 	}

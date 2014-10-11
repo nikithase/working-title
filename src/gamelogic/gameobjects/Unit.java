@@ -44,6 +44,11 @@ public class Unit implements GameObject {
 	 * The name of the player, who controls the unit.
 	 */
 	public String owner;
+        
+        /**
+	 * The texture of this unit.
+	 */
+	public String texture;
 
 	/**
 	 * 
