@@ -67,14 +67,20 @@ public class UnitList extends JPanel {
 
 			BufferedImage img;
 
-			if (u.owner.equals(player_name)) {
-				img = TextureLib.wBauer;
-				g.setColor(Color.black);
+                       if (u.owner.equals(player_name)) {
+                           if (u.texture != null && u.texture.equals("baguette_bruiser")) {
+                               img = TextureLib.baguette_bruiser;
+                           } else {
+                               img = TextureLib.wBauer;
+                           }
+                       } else {
+                           if (u.texture != null &&u.texture.equals("baguette_bruiser")) {
+                               img = TextureLib.enemy_baguette_bruiser;
+                           } else {
+                               img = TextureLib.sBauer;
+                           }
 
-			} else {
-				img = TextureLib.sBauer;
-				g.setColor(Color.white);
-			}
+                       }
 
 			g.drawImage(img, 0, count * size, size, size, this);
 
