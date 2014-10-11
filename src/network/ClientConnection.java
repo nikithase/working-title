@@ -1,4 +1,4 @@
-package server;
+package network;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -8,8 +8,8 @@ import java.net.Socket;
  *
  * @author Tobias Fleig <tobifleig@googlemail.com>
  */
-public class ClientConnection {
-    
+class ClientConnection {
+
     public ObjectOutputStream output;
     public ObjectInputStream input;
     public String name;
