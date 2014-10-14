@@ -1,22 +1,20 @@
 package gui.canvas.graphic2d;
 
+import client.Client;
+import com.sun.javafx.geom.Rectangle;
+import gamelogic.AttackCommand;
 import gamelogic.Command;
 import gamelogic.Gamelogic;
+import gamelogic.MoveCommand;
 import gamelogic.gameobjects.Unit;
 import gui.CanvasGraphic2D;
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.LinkedList;
 import java.util.List;
-
 import javax.swing.JPanel;
-
-import client.Client;
-
-import com.sun.javafx.geom.Rectangle;
 
 /**
  * 
@@ -351,17 +349,11 @@ public class Gamefield extends JPanel implements MouseListener {
 
 				if (checkOwnership(l_unit)) {
 
-					Command c = new Command(Command.MOVE, l_unit, x, y);
+					Command c = new MoveCommand( l_unit, x, y);
 					System.out.println(c.toString());
 
-					if (client == null) {
-						/** test umgebung **/
-						System.out.println("force execution");
-						logic.executeCommand(c);
-						this.canvas.refresh();
-					} else {
 						client.sendCommand(c);
-					}
+					
 
 				} else {
 					System.out.println("not your unit!");
@@ -379,17 +371,12 @@ public class Gamefield extends JPanel implements MouseListener {
 
 					attack = true;
 
-					Command c = new Command(Command.ATTACK, l_unit, x, y);
+					Command c = new AttackCommand( l_unit, x, y);
 					System.out.println(c.toString());
 
-					if (client == null) {
-						/** test umgebung **/
-						System.out.println("force execution");
-						logic.executeCommand(c);
-						this.canvas.refresh();
-					} else {
+					
 						client.sendCommand(c);
-					}
+					
 
 				} else {
 					System.out.println("not your unit!");

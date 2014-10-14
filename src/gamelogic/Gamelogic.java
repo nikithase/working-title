@@ -38,8 +38,8 @@ public class Gamelogic implements Serializable {
 
             spawnUnit(Bauer.NAME, posX, posY, owner);
         }
-        spawnUnit(BaguetteBruiser.NAME, 5,1, "Peter");
-        spawnUnit(BaguetteBruiser.NAME, 5,9, "Klaus");
+        spawnUnit(BaguetteBruiser.NAME, 5, 1, "Peter");
+        spawnUnit(BaguetteBruiser.NAME, 5, 9, "Klaus");
     }
 
     public void initClientWaitingForOtherPlayersState() {
@@ -55,8 +55,8 @@ public class Gamelogic implements Serializable {
                 {0, 0, 0, 1, 0, 1, 0, 1, 0, 0},
                 {0, 0, 0, 1, 1, 0, 0, 1, 1, 1}};
 
-        for (int x = matrix.length-1; x >= 0; x--) {
-            for (int y = matrix[0].length-1; y >= 0; y--) {
+        for (int x = matrix.length - 1; x >= 0; x--) {
+            for (int y = matrix[0].length - 1; y >= 0; y--) {
                 if (matrix[y][x] == 1) {
                     spawnUnit(Bauer.NAME, x, y, "nobody");
                 }
@@ -74,41 +74,7 @@ public class Gamelogic implements Serializable {
         return unitsOnField;
     }
 
-    /**
-     * Executs a Command
-     *
-     * @param command
-     */
-    public void executeCommand(Command command) {
-
-        for (Iterator<Unit> iter = unitsOnField.iterator(); iter.hasNext();) {
-            Unit currentUnit = iter.next();
-
-            if (currentUnit.id == command.unitId) {
-
-                switch (command.command) {
-                    case Command.MOVE:
-                        currentUnit.move(command.targetX, command.targetY);
-                        break;
-                    case Command.ATTACK:
-                        for (Iterator<Unit> iter2 = unitsOnField.iterator(); iter2.hasNext();) {
-                            Unit unitToAttack = iter2.next();
-                            if (unitToAttack.posX == command.targetX && unitToAttack.posY == command.targetY) {
-                                currentUnit.attack(unitToAttack);
-                                if (unitToAttack.hitpoints <= 0) {
-                                    iter2.remove();
-                                }
-                            }
-                        }
-                        break;
-                    default:
-					;
-                }
-
-                return;
-            }
-        }
-    }
+   
 
     public void spawnUnit(String nameOfUnit, int posX, int posY, String owner) {
         Unit newUnit;
@@ -123,5 +89,36 @@ public class Gamelogic implements Serializable {
                 throw new RuntimeException("Someone tried to create a \"" + nameOfUnit + "\" unit. Blasphemy!");
         }
         unitsOnField.add(newUnit);
+    }
+
+    /**
+     * Returns the unit with that id.
+     *
+     * @param unitId
+     * @return
+     */
+    public Unit getUnitById(int unitId) {
+        for (Unit unit : unitsOnField) {
+            if (unit.id == unitId) {
+                return unit;
+            }
+        }
+        throw new IllegalArgumentException("No unit with id " + unitId);
+    }
+
+    /**
+     * Return the unit on a position.
+     *
+     * @param targetX
+     * @param targetY
+     * @return
+     */
+    Unit getUnitOnPosition(int targetX, int targetY) {
+        for (Unit unit : unitsOnField) {
+            if (unit.posX == targetX && unit.posY == targetY) {
+                return unit;
+            }
+        }
+        throw new IllegalArgumentException("No unit on Position " + targetX + " / " + targetY);
     }
 }

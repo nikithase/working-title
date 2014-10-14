@@ -138,7 +138,7 @@ public class Client implements Runnable, ClientNetworkMessageHandler {
 
     @Override
     public void executePlayerCommand(Command command) {
-        gamelogic.executeCommand(command);
+        command.executeCommand(gamelogic);
         graphic.refresh();
         graphic.nextTurn();
     }

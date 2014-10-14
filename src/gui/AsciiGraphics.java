@@ -1,10 +1,11 @@
 package gui;
 
 import client.Client;
+import gamelogic.AttackCommand;
 import gamelogic.Command;
 import gamelogic.Gamelogic;
+import gamelogic.MoveCommand;
 import gamelogic.gameobjects.Unit;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -111,7 +112,7 @@ public class AsciiGraphics implements iGraphic {
             // interpret command
 //			if (connected && (command.equals(Command.ATTACK) || command.equals(Command.MOVE)) && (line.split(" ", 5).length == 5 || line.split(" ", 5).length == 4)) {
 //				System.out.println(command + "!!!!!!!!");
-            if ((command.equals(Command.ATTACK) || command.equals(Command.MOVE)) && (line.split(" ", 5).length == 5 || line.split(" ", 5).length == 4)) {
+            if ((command.equals("attack") || command.equals("move")) && (line.split(" ", 5).length == 5 || line.split(" ", 5).length == 4)) {
                 System.out.println(command + "!!!!!!!!");
 
                 int x = 0;
@@ -133,9 +134,12 @@ public class AsciiGraphics implements iGraphic {
                 }
 
                 if (unitId != -1) {
-                    Command c = new Command(command, unitId, targetX, targetY);
-//					logic.executeCommand(c);
-
+                    Command c = null;
+                    if(command.equals("attack")){
+                         c = new AttackCommand(unitId, targetX, targetY);
+                    }else if(command.equals("move")){
+                         c = new MoveCommand( unitId, targetX, targetY);
+                    }
                     System.out.println("Iterpreted Command: " + c.toString());
 
                     client.sendCommand(c);
