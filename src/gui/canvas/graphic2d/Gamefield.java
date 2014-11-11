@@ -1,19 +1,21 @@
 package gui.canvas.graphic2d;
 
 import client.Client;
-import com.sun.javafx.geom.Rectangle;
 import gamelogic.AttackCommand;
 import gamelogic.Command;
 import gamelogic.Gamelogic;
 import gamelogic.MoveCommand;
 import gamelogic.gameobjects.Unit;
 import gui.CanvasGraphic2D;
+
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.LinkedList;
 import java.util.List;
+
 import javax.swing.JPanel;
 
 /**
