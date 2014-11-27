@@ -1,14 +1,15 @@
-package network;
+package network.messages;
 
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import network.ClientNetworkMessageHandler;
+import network.NetworkMessage;
+import network.ServerNetworkMessageHandler;
 
 /**
  * A message in allchat.
  *
  * @author Michael
  */
-class AllchatNetworkMessage extends NetworkMessage {
+public class AllchatNetworkMessage extends NetworkMessage {
 
     private String sender;
     private String message;
@@ -16,15 +17,6 @@ class AllchatNetworkMessage extends NetworkMessage {
     public AllchatNetworkMessage(String sender, String message) {
         this.sender = sender;
         this.message = message;
-    }
-
-    @Override
-    public void writeToStream(ObjectOutputStream stream) throws IOException {
-        stream.writeByte(NetworkMessage.CHAT);
-        stream.writeUTF(sender);
-        stream.writeUTF(message);
-        stream.flush();
-
     }
 
     @Override

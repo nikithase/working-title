@@ -2,9 +2,11 @@ package server;
 
 import gamelogic.Command;
 import gamelogic.Gamelogic;
-import java.util.List;
 import network.ServerNetwork;
 import network.ServerNetworkMessageHandler;
+import network.messages.StartGameMessage;
+import network.messages.AllchatNetworkMessage;
+import network.messages.PlayerCommandMessage;
 
 /**
  * Simple Server. Relays received messages to all clients, including the sender.
@@ -32,8 +34,8 @@ public class Server implements ServerNetworkMessageHandler {
 
             Gamelogic gamelogic = new Gamelogic();
             gamelogic.initTestState();
-            network.broadcastStartGame(gamelogic);
-            
+            network.broadcastMessage(new StartGameMessage(gamelogic));
+
             while (true) {
                 Thread.sleep(100);
                 network.handleMessages();
@@ -46,11 +48,11 @@ public class Server implements ServerNetworkMessageHandler {
 
     @Override
     public void chatMessage(String player, String message) {
-        network.broadcastChatMessage(player, message);
+        network.broadcastMessage(new AllchatNetworkMessage(player, message));
     }
 
     @Override
     public void playerCommand(String player, Command command) {
-        network.broadcastPlayerCommand(command);
+        network.broadcastMessage(new PlayerCommandMessage(command));
     }
 }

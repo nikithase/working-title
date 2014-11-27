@@ -1,5 +1,7 @@
 package network;
 
+import network.messages.PlayerCommandMessage;
+import network.messages.AllchatNetworkMessage;
 import gamelogic.Command;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -57,12 +59,15 @@ public class ClientNetwork {
     }
 
     /**
-     * Receive one message from the server and calls the ClientNetworkMEssageHandler to handle it. Blocks until a complete message is received.
+     * Receive one message from the server and calls the
+     * ClientNetworkMEssageHandler to handle it. Blocks until a complete message
+     * is received.
      */
     public void receiveMessage() {
 
         try {
-            NetworkMessage message = NetworkMessage.readNetworkMessage("server", input);
+            NetworkMessage message = (NetworkMessage) input.readObject();
+
             message.handleOnClient(messageHandler);
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -78,9 +83,7 @@ public class ClientNetwork {
      */
     public void sendChatMessage(String message) {
         try {
-            output.writeByte(NetworkMessage.CHAT);
-            output.writeUTF(clientName);
-            output.writeUTF(message);
+            output.writeObject(new AllchatNetworkMessage(clientName, message));
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -94,8 +97,7 @@ public class ClientNetwork {
      */
     public void sendCommand(Command command) {
         try {
-            output.writeByte(NetworkMessage.PLAYERCOMMAND);
-            output.writeObject(command);
+            output.writeObject(new PlayerCommandMessage(command));
         } catch (IOException ex) {
             ex.printStackTrace();
         }

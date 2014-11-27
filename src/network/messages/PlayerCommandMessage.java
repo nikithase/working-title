@@ -1,27 +1,23 @@
-package network;
+package network.messages;
 
 import gamelogic.Command;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import network.ClientNetworkMessageHandler;
+import network.NetworkMessage;
+import network.ServerNetworkMessageHandler;
 
 /**
  * A players action during his turn, like attack or move for example.
  *
  * @author Michael
  */
-class PlayerCommandMessage extends NetworkMessage {
+public class PlayerCommandMessage extends NetworkMessage {
 
     private Command command;
 
     public PlayerCommandMessage(Command command) {
         this.command = command;
-    }
-
-    @Override
-    public void writeToStream(ObjectOutputStream stream) throws IOException {
-        stream.writeByte(NetworkMessage.PLAYERCOMMAND);
-        stream.writeObject(command);
-        stream.flush();
     }
 
     @Override

@@ -10,6 +10,8 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -26,7 +28,8 @@ public class ServerNetwork implements Runnable {
     /**
      * Initializes the server and starts accepting clients.
      *
-     * @param messageHandler the MessageHandler to handle all received messages from clients
+     * @param messageHandler the MessageHandler to handle all received messages
+     * from clients
      */
     public ServerNetwork(ServerNetworkMessageHandler messageHandler) {
         this.messageHandler = messageHandler;
@@ -43,38 +46,10 @@ public class ServerNetwork implements Runnable {
 
     }
 
-    /**
-     * Send message to all clients.
-     *
-     * @param command
-     */
-    public void broadcastPlayerCommand(Command command) {
-        PlayerCommandMessage message = new PlayerCommandMessage(command);
+    public void broadcastMessage(NetworkMessage message) {
         clients.stream().forEach((client) -> {
             try {
-                message.writeToStream(client.output);
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        });
-    }
-
-    public void broadcastChatMessage(String player, String text) {
-        AllchatNetworkMessage message = new AllchatNetworkMessage(player, text);
-        clients.stream().forEach((client) -> {
-            try {
-                message.writeToStream(client.output);
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        });
-    }
-
-    public void broadcastStartGame(Gamelogic gamelogic) {
-        StartGameMessage message = new StartGameMessage(gamelogic);
-        clients.stream().forEach((client) -> {
-            try {
-                message.writeToStream(client.output);
+                client.output.writeObject(message);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -110,7 +85,8 @@ public class ServerNetwork implements Runnable {
                 Thread messageReceiveThread = new Thread(() -> {
                     try {
                         while (true) {
-                            NetworkMessage message = NetworkMessage.readNetworkMessage(connection.name, connection.input);
+                            NetworkMessage message = (NetworkMessage) connection.input.readObject();
+                            message.receivedFrom = connection.name;
                             receivedMessages.add(message);
                         }
                     } catch (SocketException ex) {
@@ -131,7 +107,8 @@ public class ServerNetwork implements Runnable {
     }
 
     /**
-     * Call the ServerNetworkMessageHandler for every message received since the last call to this method.
+     * Call the ServerNetworkMessageHandler for every message received since the
+     * last call to this method.
      */
     public void handleMessages() {
         for (NetworkMessage message : receivedMessages) {
