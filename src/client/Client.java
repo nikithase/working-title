@@ -7,6 +7,7 @@ import gui.iGraphic;
 import java.util.Arrays;
 import network.ClientNetwork;
 import network.ClientNetworkMessageHandler;
+import network.messages.PlayerCommandMessage;
 
 /**
  *
@@ -80,7 +81,7 @@ public class Client implements Runnable, ClientNetworkMessageHandler {
      * @param command
      */
     public void sendCommand(Command command) {
-        network.sendCommand(command);
+        network.sendMessage(new PlayerCommandMessage(command));
     }
 
     /**
