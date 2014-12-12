@@ -1,8 +1,19 @@
 package gui;
 
+import gamelogic.Command;
+
 import java.util.logging.Logger;
 
-public class FXGraphic implements iGui {
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+
+public class FXGraphic extends Application implements iGui {
 
 	// logger
 	private static final Logger log = Logger.getLogger(FXGraphic.class.getName());
@@ -13,11 +24,8 @@ public class FXGraphic implements iGui {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		iGui fx = new FXGraphic();
-		log.info("Gui Start Status: " + fx.initialize());
-		log.info("Move Action: " + fx.performAction(null));
+		launch(args);
 	}
-
 	/**
 	 * 
 	 * First: Username and IP
@@ -29,34 +37,26 @@ public class FXGraphic implements iGui {
 	 * 
 	 */
 	
+	
+	/**
+	 * 
+	 */
+	public boolean performAction(Command cmd) {
+		return false;
+	}
 	@Override
-	public boolean initialize() {
-		
-		login();
-		connect();
-		loadGamefield();
-		
-		return true;
-	}
+	public void start(Stage stage) throws Exception {
 	
-	
-	private void login(){
+	//	final StackPane stackPane = new StackPane();
 		
+	//	final Node lableNode = new Label("Hello World");
+	//	stackPane.getChildren().add(lableNode);
+	//	stage.setScene(new Scene(stackPane, 300,300));
 		
-	}
-
-	private void connect(){
-		
-		
-	}
-
-	private void loadGamefield(){
-		
-		
-	}
-	
-	
-	public void performAction() {
-		
+		final Parent root = FXMLLoader.load(getClass().getResource("template/login.fxml"));
+		stage.setScene(new Scene(root, 500,500));
+		stage.setTitle("teest");
+		stage.show();
+				
 	}
 }
