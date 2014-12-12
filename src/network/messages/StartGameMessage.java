@@ -1,27 +1,24 @@
-package network;
+package network.messages;
 
 import gamelogic.Gamelogic;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import network.ClientNetworkMessageHandler;
+import network.NetworkMessage;
+import network.ServerNetworkMessageHandler;
 
 /**
- * This message sends the starting units to the clients and tells them that the game begins.
+ * This message sends the starting units to the clients and tells them that the
+ * game begins.
  *
  * @author Michael
  */
-class StartGameMessage extends NetworkMessage {
+public class StartGameMessage extends NetworkMessage {
 
     private Gamelogic gamelogic;
 
     public StartGameMessage(Gamelogic gamelogic) {
         this.gamelogic = gamelogic;
-    }
-
-    @Override
-    public void writeToStream(ObjectOutputStream stream) throws IOException {
-        stream.writeByte(NetworkMessage.STARTGAME);
-        stream.writeObject(gamelogic);
-        stream.flush();
     }
 
     @Override
